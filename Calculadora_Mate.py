@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox
 import math
-
+import Pantalla_principal as PP
 rai = tk.Tk()
 rai.title("Calculadora de Combinaciones y Repeticiones")
 rai.geometry("500x500")
@@ -78,6 +78,6 @@ btncomb = tk.Button(rai, text="Combinaciones", command=lambda: mostrar_panta("Co
 btnpermu.place(x=50, y=20)
 btncomb.place (x=250, y=20)
 
-
+PP.volver()
 
 rai.mainloop()

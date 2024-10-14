@@ -1,4 +1,5 @@
 import tkinter as tk
+import Calculadora_Mate as CM
 
 def pantalla_inicio():
     home.grid()
@@ -7,6 +8,7 @@ def pantalla_inicio():
     
 def pantalla_algebra():
     algebra_lineal.grid()
+
     home.grid_forget()
     matematica_discreta.grid_forget()
     boton1.place_forget()
@@ -20,7 +22,7 @@ def pantalla_matematica():
     boton1.place_forget()
     boton2.place_forget()
     boton3.place_forget()
-    
+
 ventana = tk.Tk()
 ventana.title("proyecto final")
 ventana.geometry("400x300")

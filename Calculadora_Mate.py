@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox
 import math
-
+import Pantalla_principal as PP
 rai = tk.Tk()
 rai.title("Calculadora de ")
 rai.geometry("950x950")
@@ -52,7 +52,7 @@ seglab = tk.Label(rai, text="Ingrese El segundo valor", font=("Times New Roman",
 entra_pri = tk.Entry(rai, font=("Times New Roman", 10), width=20)
 entra_seg = tk.Entry(rai, font=("Times New Roman", 10), width=20)
 
-
+PP.volver()
 
 
 

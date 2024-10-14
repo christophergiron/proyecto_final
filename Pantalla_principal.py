@@ -39,6 +39,9 @@ boton2.place(x=145, y=70, width=130, height=30)
 
 boton3 =tk.Button(ventana,text="Matematica discreta", command=pantalla_matematica)
 boton3.place(x=145, y=100, width=130, height=30)
+def volver():
+    boton4 = tk.Button(ventana, text=" regresar al inicio ", command=pantalla_inicio)
+    boton4.place(x=145, y=150, width=130, height=30)
 #opciones de menus 
 #opciones de la pagina 1
 poyo= tk.Label(home, text="Bienvenido selecciona tu calculadora",font=("Times New Roman", 12))

@@ -8,6 +8,9 @@ CA_Win.title("Calculadora de matrices")
 CA_Win.geometry("625x300")
 
 def menu_principal():
+    for menu1 in CA_Win.winfo_children():
+        menu1.destroy()
+        
     def backButton():
         boton_return = tk.Button(CA_Win, text="Regresar", command=menu_principal)
         boton_return.grid(row=1, column=8, padx=10, pady=10)
@@ -74,7 +77,5 @@ def menu_principal():
     botonS = tk.Button(CA_Win, text="Sistemas de ecuaciones lineales", command=sis_ecu)
     botonS.grid(row=21, column=8, padx=10, pady=10)
 
-for menu1 in CA_Win.winfo_children():
-    menu1.destroy()
 menu_principal()
 CA_Win.mainloop()

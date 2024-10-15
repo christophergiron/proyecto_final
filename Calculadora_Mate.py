@@ -58,14 +58,16 @@ def operaciones_matematica_discreta(frame, volver_inicio):
                 return
             
             tiprep = "Con Repetición" if camb_rep.get() == "Con Repeticion" else "Sin Repetición"
+            pqpermu = "porque n! / (n-m)!" if camb_rep.get() == "Sin Repeticion" else "porque n^m"
+            pqcomb = "porque n! / [m!(n-m)!]" if camb_rep.get() == "Sin Repeticion" else "porque (n+m-1)! / [m!(n-1)!]"
             
             if camb.get() == "Permutacion":
                 resulta = permu(pri, seg, camb_rep.get())
-                result.config(text = f"Permutaciones {tiprep}: {resulta} " ) 
+                result.config(text = f"Permutaciones {tiprep}: {pqpermu} es igual a: {resulta} " ) 
             
             elif camb.get() == "Combinacion":
                 resulta = comb(pri, seg, camb_rep.get())
-                resultc.config(text = f"Combinaciones {tiprep}: {resulta}" ) 
+                resultc.config(text = f"Combinaciones {tiprep}: {pqcomb} es igual a: {resulta}" ) 
                 
         except ValueError:
             messagebox.showerror("", "El valor introducido no es valido, Introduce Por favor un Numero")
@@ -108,11 +110,11 @@ def operaciones_matematica_discreta(frame, volver_inicio):
     conrep = tk.Radiobutton(panta_permu, text="Con Repeticion", variable=camb_rep, value="Con Repeticion", font=("Times New Roman", 10))
     conrep.grid(row=4, column=2, padx=10, pady=10)
 
-    btncalc = tk.Button(panta_permu, text="Calcular", command=calc, font=("Times New Roman", 10), width=20, height=2)
+    btncalc = tk.Button(panta_permu, text="Calcular", command=calc, font=("Times New Roman", 10), width=50, height=2)
     btncalc.grid(row=6, column=0, columnspan=2, pady=10)
 
     result = tk.Label(panta_permu, text="", font=("Times New Roman", 10))
-    result.grid(row=6, column=2, columnspan=2, pady=10)
+    result.grid(row=7, column=1, columnspan=2, pady=10)
 
     btnpatras_permu = tk.Button(panta_permu, text="Regresar", command=lambda: mostrar(panta_princi), font=("Times New Roman", 10), width=10, height=2)
     btnpatras_permu.grid(row=1, column=0, pady=10)
@@ -141,11 +143,11 @@ def operaciones_matematica_discreta(frame, volver_inicio):
     conrepc = tk.Radiobutton(panta_comb, text="Con Repeticion", variable=camb_rep, value="Con Repeticion", font=("Times New Roman", 10))
     conrepc.grid(row=4, column=2, padx=10, pady=10)
 
-    btncalcc = tk.Button(panta_comb, text="Calcular", command=calc, font=("Times New Roman", 10), width=20, height=2)
+    btncalcc = tk.Button(panta_comb, text="Calcular", command=calc, font=("Times New Roman", 10), width=50, height=2)
     btncalcc.grid(row=6, column=0, columnspan=2, pady=10)
 
     resultc = tk.Label(panta_comb, text="", font=("Times New Roman", 10))
-    resultc.grid(row=6, column=2, columnspan=2, pady=10)
+    resultc.grid(row=7, column=1, columnspan=2, pady=10)
 
     btnpatras_com = tk.Button(panta_comb, text="Regresar", command=lambda: mostrar(panta_princi), font=("Times New Roman", 10), width=10, height=2)
     btnpatras_com.grid(row=1, column=0, pady=10)

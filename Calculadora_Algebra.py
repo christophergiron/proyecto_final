@@ -13,7 +13,7 @@ def menu_principal():
         
     def backButton():
         boton_return = tk.Button(CA_Win, text="Regresar", command=menu_principal)
-        boton_return.grid(row=1, column=8, padx=10, pady=10)
+        boton_return.grid(row=0, column=0, padx=10, pady=10)
         
     def clean_buttons():
         instruccion.grid_forget()
@@ -24,17 +24,18 @@ def menu_principal():
     def inversa():
         clean_buttons()
         instruccionInv = tk.Label(CA_Win, text="Ingrese su matriz: ")
-        instruccionInv.grid(row=0, column=0, columnspan=2, padx=10, pady=10)
+        instruccionInv.grid(row=0, column=5, columnspan=2, padx=10, pady=10)
         backButton()
         
     def multi():
         clean_buttons()
-        instruccionInv = tk.Label(CA_Win, text="Ingrese su matriz: ")
-        instruccionInv.grid(row=0, column=0, columnspan=2, padx=10, pady=10)
+        instruccionMulti = tk.Label(CA_Win, text="Ingrese sus matrices: ")
+        instruccionMulti.grid(row=0, column=5, columnspan=2, padx=10, pady=10)
         backButton()
         
     def sis_ecu_sub():
         def clean_buttons_sub1():
+            instruccionMetodo.grid_forget()
             boton_cramer.grid_forget()
             boton_Gaus.grid_forget()
             boton_return_main.grid_forget()
@@ -42,21 +43,24 @@ def menu_principal():
         def sis_ecu_Gaus():
             clean_buttons_sub1()
             boton_return = tk.Button(CA_Win, text="Regresar", command=sis_ecu_sub)
-            boton_return.grid(row=1, column=8, padx=10, pady=10)
+            boton_return.grid(row=0, column=0, padx=10, pady=10)
             
         def sis_ecu_cramer():
             clean_buttons_sub1()
             boton_return = tk.Button(CA_Win, text="Regresar", command=sis_ecu_sub)
-            boton_return.grid(row=1, column=8, padx=10, pady=10)
+            boton_return.grid(row=0, column=0, padx=10, pady=10)
 
+        instruccionMetodo = tk.Label(CA_Win, text="Seleccione el metodo a utilizar")
+        instruccionMetodo.grid(row=0, column=5, columnspan=5, padx=10, pady=10)
+        
         boton_Gaus = tk.Button(CA_Win, text="Metodo de Gauss-Jordan", command=sis_ecu_Gaus)
-        boton_Gaus.grid(row=1, column=8, padx=10, pady=10)
+        boton_Gaus.grid(row=1, column=10, padx=10, pady=10)
 
         boton_cramer = tk.Button(CA_Win, text="Metodo de cramer", command=sis_ecu_cramer)
-        boton_cramer.grid(row=11, column=8, padx=10, pady=10)
+        boton_cramer.grid(row=11, column=10, padx=10, pady=10)
         
         boton_return_main = tk.Button(CA_Win, text="Regresar", command=menu_principal)
-        boton_return_main.grid(row=21, column=8, padx=10, pady=10)
+        boton_return_main.grid(row=0, column=0, padx=10, pady=10)
         
     def sis_ecu():
         clean_buttons()

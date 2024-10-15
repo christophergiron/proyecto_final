@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import messagebox
 import math
 # Función que coloca los widgets en el frame de matemática discreta
-def operaciones_matematica_discreta(frame):
+def operaciones_matematica_discreta(frame, volver_inicio):
     
     #Creacion de las pantallas
     panta_princi = tk.Frame(frame)
@@ -73,11 +73,15 @@ def operaciones_matematica_discreta(frame):
         
         
     btnpermu = tk.Button(panta_princi, text="Permutacion", command=lambda:[mostrar(panta_permu), camb.set("Permutacion")], font=("Times New Roman", 10), width=30, height=3)
-    btnpermu.pack(pady=20)
+    btnpermu.grid(row=1, column=2, padx=200, pady=10)
 
 
     btncomb = tk.Button(panta_princi, text="Combinacion", command=lambda: [mostrar(panta_comb), camb.set("Combinacion")], font=("Times New Roman", 10), width=30, height=3)
-    btncomb.pack(pady=20)
+    btncomb.grid(row=2, column=2,padx=200, pady=15)
+    
+     # Botón para volver al menú principal del proyecto (regresar a la selección de calculadoras)
+    btn_volver_menu = tk.Button(panta_princi, text="Volver al Inicio", command=volver_inicio, font=("Times New Roman", 10), width=30, height=3)
+    btn_volver_menu.grid(row=3, column=2, padx=200, pady=20)
 
     #Pantalla permu
     camb = tk.StringVar(value="Permutacion")
@@ -145,7 +149,5 @@ def operaciones_matematica_discreta(frame):
 
     btnpatras_com = tk.Button(panta_comb, text="Regresar", command=lambda: mostrar(panta_princi), font=("Times New Roman", 10), width=10, height=2)
     btnpatras_com.grid(row=1, column=0, pady=10)
-
+    
     mostrar(panta_princi)
-
-    frame.mainloop()

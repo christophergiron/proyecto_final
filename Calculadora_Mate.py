@@ -13,7 +13,7 @@ def operaciones_matematica_discreta(frame, volver_inicio,):
         panta_princi.pack_forget()
         panta_permu.pack_forget()
         panta_comb.pack_forget()
-        panta.pack()
+        panta.pack(fill="both", expand=True)
         
         if panta == panta_princi:
             entra_pri.delete(0, tk.END) #Hace que la pantalla borre los datos introducidos anteriormente, osea los numeros
@@ -72,7 +72,7 @@ def operaciones_matematica_discreta(frame, volver_inicio,):
         except ValueError: #muestra error si no se introduce un numero y se introduce una letra o si no se introduce nada
             messagebox.showerror("", "El valor introducido no es valido, Introduce Por favor un Numero")
             return
-        
+           
     #Botones para enselar las pantallas de permutacion y de combinacion, haciendo que se intercambien entre las 3, que son la principal y las otras 2
     btnpermu = tk.Button(panta_princi, activebackground="#0085fa",bg="#00bbfa", text="Permutacion", command=lambda:[mostrar(panta_permu), camb.set("Permutacion")], font=("Times New Roman", 10), width=30, height=3)
     btnpermu.grid(row=1, column=2, padx=200, pady=10)
@@ -153,5 +153,5 @@ def operaciones_matematica_discreta(frame, volver_inicio,):
 
     btnpatras_com = tk.Button(panta_comb, activebackground="#a93a48", bg="#c93a48", text="Regresar", command=lambda: mostrar(panta_princi), font=("Times New Roman", 10), width=10, height=2)
     btnpatras_com.grid(row=1, column=0, pady=10)
-    
+
     mostrar(panta_princi) #llama a la pantalla principal para seleccionar la operacion 

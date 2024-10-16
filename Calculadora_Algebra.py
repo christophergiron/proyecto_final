@@ -7,6 +7,8 @@ import sys
 CA_Win = tk.Tk()
 CA_Win.title("Calculadora de matrices")
 CA_Win.geometry("625x400")
+frame_matriz = None
+boton_calcular = None
 
 def menu_principal():
     for menu1 in CA_Win.winfo_children():
@@ -38,19 +40,31 @@ def menu_principal():
         columna_e2.grid(row=2, column=1)
 
         def generar_matriz():
+            global frame_matriz, boton_calcular
+
+            # Si existe un frame de matriz previo, eliminarlo
+            if frame_matriz is not None:
+                frame_matriz.destroy()
+                
+                if boton_calcular is not None:
+                    boton_calcular.destroy()
             try:
                 filas = int(fila_e1.get())
                 columnas = int(columna_e2.get())
 
-                if filas <= 1 | columnas <= 1:
-                    messagebox.showerror("","El tamaño debe ser mayor a 1.")
-                else: 
+                if filas <= 1 or columnas <= 1:
+                    messagebox.showerror("", "El tamaño debe ser mayor a 1.")
+                else:
+                    # Crear un nuevo frame para la matriz
+                    frame_matriz = tk.Frame(CA_Win)
+                    frame_matriz.grid(row=4, column=0, columnspan=columnas)
+
                     entradas_matriz = []
                     for i in range(filas):
                         fila = []
                         for j in range(columnas):
-                            entrada = tk.Entry(CA_Win, width=5)
-                            entrada.grid(row=4 + i, column=j, padx=5, pady=5)
+                            entrada = tk.Entry(frame_matriz, width=5)
+                            entrada.grid(row=i, column=j, padx=5, pady=5)
                             fila.append(entrada)
                         entradas_matriz.append(fila)
 

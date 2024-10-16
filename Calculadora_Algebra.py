@@ -8,6 +8,7 @@ CA_Win = tk.Tk()
 CA_Win.title("Calculadora de matrices")
 CA_Win.geometry("625x400")
 frame_matriz = None
+frame_matriz_M2 = None
 boton_calcular = None
 
 def menu_principal():
@@ -52,7 +53,7 @@ def menu_principal():
                 filas = int(fila_e1.get())
                 columnas = int(columna_e2.get())
 
-                if filas <= 1 or columnas <= 1:
+                if filas <= 1 | columnas <= 1:
                     messagebox.showerror("", "El tamaño debe ser mayor a 1.")
                 else:
                     # Crear un nuevo frame para la matriz
@@ -101,77 +102,114 @@ def menu_principal():
     def multi():
         clean_buttons()
         instruccionMulti = tk.Label(CA_Win, text="Ingrese el tamaño de sus matrices: ")
-        instruccionMulti.grid(row=0, column=5, columnspan=2, padx=10, pady=10)
+        instruccionMulti.grid(row=0, column=1, columnspan=2, padx=10, pady=10)
         
         instruccionMulti_M1 = tk.Label(CA_Win, text="Primera Matriz")
-        instruccionMulti_M1.grid(row=0, column=5, columnspan=2, padx=10, pady=10)
+        instruccionMulti_M1.grid(row=1, column=0, columnspan=2, padx=10, pady=10)
         
         instruccionMulti_M2 = tk.Label(CA_Win, text="Segunda Matriz")
-        instruccionMulti_M2.grid(row=0, column=5, columnspan=2, padx=10, pady=10)
+        instruccionMulti_M2.grid(row=1, column=2, columnspan=2, padx=10, pady=10)
         
         fila_la1 = tk.Label(CA_Win, text="Filas: ")
-        fila_la1.grid(row=1, column=0)
+        fila_la1.grid(row=2, column=0)
         fila_e1 = tk.Entry(CA_Win, width=5)
-        fila_e1.grid(row=1, column=1)
+        fila_e1.grid(row=2, column=1)
 
         columna_la1 = tk.Label(CA_Win, text="Columnas: ")
-        columna_la1.grid(row=2, column=0)
+        columna_la1.grid(row=3, column=0)
         columna_e1 = tk.Entry(CA_Win, width=5)
-        columna_e1.grid(row=2, column=1)
+        columna_e1.grid(row=3, column=1)
         
         fila_la2 = tk.Label(CA_Win, text="Filas: ")
-        fila_la2.grid(row=1, column=0)
+        fila_la2.grid(row=2, column=2)
         fila_e2 = tk.Entry(CA_Win, width=5)
-        fila_e2.grid(row=1, column=1)
+        fila_e2.grid(row=2, column=3)
 
         columna_la2 = tk.Label(CA_Win, text="Columnas: ")
-        columna_la2.grid(row=2, column=0)
+        columna_la2.grid(row=3, column=2)
         columna_e2 = tk.Entry(CA_Win, width=5)
-        columna_e2.grid(row=2, column=1)
+        columna_e2.grid(row=3, column=3)
         
         def generar_matriz():
+            global frame_matriz, frame_matriz_M2, boton_calcular
+            # Si existe un frame de matriz previo, eliminarlo
+            if frame_matriz is not None:
+                frame_matriz.destroy()
+                
+                if boton_calcular is not None:
+                    boton_calcular.destroy()
+                    
+            if frame_matriz_M2 is not None:
+                frame_matriz_M2.destroy()
+                if boton_calcular is not None:
+                    boton_calcular.destroy()
             try:
                 filas = int(fila_e1.get())
                 columnas = int(columna_e1.get())
                 
-                filas2 = int(fila_e2.get())
-                columnas2 = int(columna_e2.get())
+                filas_M2 = int(fila_e2.get())
+                columnas_M2 = int(columna_e2.get())
 
-                if filas <= 0 or columnas <= 0:
-                    raise ValueError("El tamaño de la primera matriz debe ser mayor a 0.")
+                if filas <= 1 or columnas <= 1 or filas_M2 <= 1 or columnas_M2 <= 1:
+                    messagebox.showerror("", "El tamaño debe ser mayor a 1.")
+                else:
+                    if filas != columnas_M2:
+                        messagebox.showerror("", "Estas matrices no se pueden multiplicar!!!")
+                    else:
+                        # Crear un nuevo frame para la matriz
+                        frame_matriz = tk.Frame(CA_Win)
+                        frame_matriz.grid(row=4, column=0, columnspan=columnas)
+                        
+                        frame_matriz_M2 = tk.Frame(CA_Win)
+                        frame_matriz_M2.grid(row=4, column=columnas+1, columnspan=columnas_M2)
+
+                        entradas_matriz = []
+                        for i in range(filas):
+                            fila = []
+                            for j in range(columnas):
+                                entrada = tk.Entry(frame_matriz, width=5)
+                                entrada.grid(row=i, column=j, padx=5, pady=5)
+                                fila.append(entrada)
+                            entradas_matriz.append(fila)
+                            
+                        entradas_matriz_2 = []
+                        for i in range(filas_M2):
+                            fila_2 = []
+                            for j in range(columnas_M2):
+                                entrada_2 = tk.Entry(frame_matriz_M2, width=5)
+                                entrada_2.grid(row=i, column=j, padx=5, pady=5)
+                                fila_2.append(entrada_2)
+                            entradas_matriz_2.append(fila)
+                    
+                        def calculoEnSi():
+                            try:
+                                # Obtener los valores de las matrices ingresadas
+                                matriz = np.array([[float(entradas_matriz[i][j].get()) for j in range(columnas)] for i in range(filas)])
+                                matriz_M2 = np.array([[float(entradas_matriz_2[i][j].get()) for j in range(columnas_M2)] for i in range(filas_M2)])
+                                # Realizar la multiplicación de matrices (producto matricial)
+                                resultado = np.dot(matriz, matriz_M2)
+                                # Mostrar el resultado en una nueva ventana o actualizar algún widget para mostrarlo
+                                resultado_multi.config(text=f"Resultado:\n{resultado}")
+                            except ValueError as e:
+                                resultado_multi.config(text=f"Error: {str(e)}")
+                                messagebox.showerror("","Error, revisa la descripcion")
+                            except Exception as e:
+                                resultado_multi.config(text=f"Error inesperado: {str(e)}")
                 
-                if filas2 <= 0 or columnas2 <= 0:
-                    raise ValueError("El tamaño de la segunda matriz debe ser mayor a 0.")
-                
-                if columnas != filas2():
-                    raise ValueError("Estas matrices no se pueden multiplicar!!!")
-                
-                entradas_matriz = []
-                for i in range(filas):
-                    fila = []
-                    for j in range(columnas):
-                        entrada = tk.Entry(CA_Win, width=5)
-                        entrada.grid(row=4 + i, column=j, padx=5, pady=5)
-                        fila.append(entrada)
-                    entradas_matriz.append(fila)
-                
-                def calculoEnSi():
-                    print("SI funco")
-                
-                boton_calcular = tk.Button(CA_Win, text="Multiplicar", command=calculoEnSi)
-                boton_calcular.grid(row=4 + filas, column=0, columnspan=2, padx=10, pady=10)
+                    boton_calcular = tk.Button(CA_Win, text="Multiplicar", command=calculoEnSi)
+                    boton_calcular.grid(row=6 + filas, column=1, columnspan=2, padx=10, pady=10)
                 
             except ValueError as e:
                 resultado_multi.config(text=f"Error: {str(e)}")
+                messagebox.showerror("","Error, revisa la descripcion")
                 
         boton_generar = tk.Button(CA_Win, text="Generar Matriz", command=generar_matriz)
-        boton_generar.grid(row=3, column=0, columnspan=2, padx=10, pady=10)
+        boton_generar.grid(row=6, column=1, columnspan=2, padx=10, pady=10)
 
-        resultado_inversa = tk.Label(CA_Win, text="")
-        resultado_inversa.grid(row=4 + 10, column=0, columnspan=4, padx=10, pady=10)
+        resultado_multi = tk.Label(CA_Win, text="")
+        resultado_multi.grid(row=4 + 10, column=0, columnspan=4, padx=10, pady=10)
                 
         backButton()
-        
         
     def sis_ecu_sub():
         def clean_buttons_sub1():

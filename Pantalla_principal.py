@@ -2,7 +2,6 @@ import tkinter as tk
 import Calculadora_Mate as CM 
 import pygame
 import os
-
 carpeta_recursos = os.path.join(os.path.dirname(__file__), 'audiovisual')
 
 # Ventana principal

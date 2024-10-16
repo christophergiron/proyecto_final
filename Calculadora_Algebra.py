@@ -179,7 +179,7 @@ def menu_principal():
                                 entrada_2 = tk.Entry(frame_matriz_M2, width=5)
                                 entrada_2.grid(row=i, column=j, padx=5, pady=5)
                                 fila_2.append(entrada_2)
-                            entradas_matriz_2.append(fila)
+                            entradas_matriz_2.append(fila_2)
                     
                         def calculoEnSi():
                             try:

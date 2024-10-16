@@ -5,9 +5,9 @@ import math
 def operaciones_matematica_discreta(frame, volver_inicio):
     
     #Creacion de las pantallas
-    panta_princi = tk.Frame(frame)
-    panta_permu = tk.Frame(frame)
-    panta_comb = tk.Frame(frame)
+    panta_princi = tk.Frame(frame, bg="blue")
+    panta_permu = tk.Frame(frame,bg="blue")
+    panta_comb = tk.Frame(frame,)
 
     def mostrar(panta): # definicion de que hace cada pantalla y empaquetamiento de cada una
         panta_princi.pack_forget()

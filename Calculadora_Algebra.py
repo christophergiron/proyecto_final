@@ -224,9 +224,42 @@ def menu_principal():
             boton_return.grid(row=0, column=0, padx=10, pady=10)
             
         def sis_ecu_cramer():
+            # aun en progreso
+            #🕆︎■︎ ❍︎♏︎■︎⬧︎♋︎🙰♏︎ ♍︎□︎❒︎♎︎♓︎♋︎●︎ ♍︎♒︎❒︎♓︎⬧︎ ❍︎♏︎ ♍︎♋︎♑︎□︎ ♏︎■︎ ⧫︎◆︎ ♏︎⌧︎♓︎⬧︎⧫︎♏︎■︎♍︎♓︎♋︎ ◻︎□︎❒︎ ●︎♋︎ ♓︎♎︎♏︎♋︎ ♎︎♏︎ ●︎□︎⬧︎ ⬧︎◆︎♌︎ ❍︎♏︎■︎◆︎⬧︎ ❍︎♏︎ ♍︎□︎❍︎◻︎●︎♓︎♍︎♋︎⬧︎⧫︎♏︎ ●︎♋︎ ❖︎♓︎♎︎♋︎ 👍︎❄︎💣︎
             clean_buttons_sub1()
+            
+            def clean_buttons_sub2():
+                instruccionSize.grid_forget()
+                boton_2x2.grid_forget()
+                boton_3x3.grid_forget()
+                boton_4x4.grid_forget()
+                
+            def doble():
+                print("S3A")
+                clean_buttons_sub2()
+                instruccionCram = tk.Label(CA_Win, text="Ingrese su sistema de ecuaciones")
+                instruccionCram.grid(row=0, column=1, columnspan=2, padx=10, pady=10)
+                
+            def triple():
+                print("S3B")
+                clean_buttons_sub1()
+                
+            def cuadruple():
+                print("S3C")
+                clean_buttons_sub2()
+                
             boton_return = tk.Button(CA_Win, text="Regresar", command=sis_ecu_sub)
             boton_return.grid(row=0, column=0, padx=10, pady=10)
+            
+            instruccionSize = tk.Label(CA_Win, text="Seleccione el tamaño del sistema de ecuaciones")
+            instruccionSize.grid(row=0, column=2, columnspan=4, padx=10, pady=10)
+                
+            boton_2x2 = tk.Button(CA_Win, text="2x2", command=doble)
+            boton_2x2.grid(row=1, column=2, padx=10, pady=10)
+            boton_3x3 = tk.Button(CA_Win, text="3x3", command=triple)
+            boton_3x3.grid(row=1, column=3, padx=10, pady=10)
+            boton_4x4 = tk.Button(CA_Win, text="4x4", command=cuadruple)
+            boton_4x4.grid(row=1, column=4, padx=10, pady=10)
 
         instruccionMetodo = tk.Label(CA_Win, text="Seleccione el metodo a utilizar")
         instruccionMetodo.grid(row=0, column=5, columnspan=5, padx=10, pady=10)
@@ -259,5 +292,6 @@ def menu_principal():
     botonS = tk.Button(CA_Win, text="Sistemas de ecuaciones lineales", command=sis_ecu)
     botonS.grid(row=21, column=8, padx=10, pady=10)
 
+#Cangrejo en el codigo 🦀
 menu_principal()
 CA_Win.mainloop()

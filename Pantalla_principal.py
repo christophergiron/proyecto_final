@@ -11,7 +11,7 @@ ventana.title("Proyecto Final")
 ventana.geometry("800x500")
 ventana.resizable(0, 0)
 ventana.iconbitmap(os.path.join(carpeta_recursos, 'logo.ico'))
-
+ventana.config(bg="#00183e")
 # Inicializa pygame para la reproducción de sonidos
 pygame.mixer.init()
 
@@ -77,13 +77,12 @@ def pantalla_integrantes():
     boton_volver_integrantes.grid(row=4, column=1, padx=10, pady=10)
 
 # Definición de las pantallas
-home = tk.Frame(ventana)
+home = tk.Frame(ventana, bg="#00183e")  # Asegúrate de aplicar el color a todos los Frames
 algebra_lineal = tk.Frame(ventana, bg="#00183e")
 matematica_discreta = tk.Frame(ventana, bg="#00183e")
 integrantes = tk.Frame(ventana, bg="#00183e")
 frame_integrantes = tk.Frame(integrantes, bg="#00183e")
 frame_integrantes.grid(row=0, column=0, padx=50, pady=20)
-
 
 # Botones de navegación entre calculadoras
 boton1 = tk.Button(ventana, activebackground="#0085fa", bg="#00bbfa", text="Álgebra lineal", command=pantalla_algebra, width=30, height=3)
@@ -137,4 +136,3 @@ boton_volver_integrantes.pack(pady=5)  # Colocamos el botón debajo del Treeview
 pantalla_inicio()
 
 ventana.mainloop()
-

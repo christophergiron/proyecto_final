@@ -73,18 +73,19 @@ def operaciones_matematica_discreta(frame, volver_inicio,):
             messagebox.showerror("", "El valor introducido no es valido, Introduce Por favor un Numero")
             return
     nosirvedenada = tk.Label(panta_princi,  bg="#00183e")
-    nosirvedenada.grid(row=0, column=3, padx=317, pady=30)    
+    nosirvedenada.grid(row=0, column=3, padx=302, pady=30)   
+    
     #Botones para enselar las pantallas de permutacion y de combinacion, haciendo que se intercambien entre las 3, que son la principal y las otras 2
     btnpermu = tk.Button(panta_princi, activebackground="#0085fa",bg="#00bbfa", text="Permutacion", command=lambda:[mostrar(panta_permu), camb.set("Permutacion")], font=("Times New Roman", 10), width=30, height=3)
-    btnpermu.grid(row=1, column=3, padx=315, pady=10)
+    btnpermu.grid(row=1, column=3, padx=302, pady=10)
 
 
     btncomb = tk.Button(panta_princi, activebackground="#0085fa",bg="#00bbfa", text="Combinacion", command=lambda: [mostrar(panta_comb), camb.set("Combinacion")], font=("Times New Roman", 10), width=30, height=3)
-    btncomb.grid(row=2, column=3,padx=315, pady=10)
+    btncomb.grid(row=2, column=3,padx=302, pady=10)
     
      # Botón para volver al menú principal del proyecto (regresar a la selección de calculadoras)
     btn_volver_menu = tk.Button(panta_princi, activebackground="#a93a48", bg="#c93a48",text="Volver al Inicio", command=volver_inicio, font=("Times New Roman", 10), width=30, height=3)
-    btn_volver_menu.grid(row=3, column=3, padx=315, pady=15)
+    btn_volver_menu.grid(row=3, column=3, padx=302, pady=15)
     
     btnnada = tk.Button(panta_princi, text="", bg="#00bbfa", command=volver_inicio)
     btnnada.grid(row=9, column=3, padx=310, pady=3000)

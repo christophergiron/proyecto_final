@@ -85,17 +85,17 @@ frame_integrantes = tk.Frame(integrantes, bg="#00183e")
 frame_integrantes.grid(row=0, column=0, padx=50, pady=20)
 
 # Botones de navegación entre calculadoras
-boton1 = tk.Button(ventana, activebackground="#0085fa", bg="#00bbfa", text="Álgebra lineal", command=pantalla_algebra, width=30, height=3)
+boton1 = tk.Button(ventana, activebackground="#0085fa", bg="#00bbfa", text="Álgebra lineal",  font=("Times New Roman", 10),command=pantalla_algebra, width=30, height=3)
 boton1.grid(row=1, column=0, padx=10, pady=10)
 
-boton2 = tk.Button(ventana, activebackground="#0085fa", bg="#00bbfa", text="Matemática discreta", command=pantalla_matematica, width=30, height=3)
+boton2 = tk.Button(ventana, activebackground="#0085fa", bg="#00bbfa", text="Matemática discreta",  font=("Times New Roman", 10),command=pantalla_matematica, width=30, height=3)
 boton2.grid(row=2, column=0, padx=10, pady=10) 
 
-boton_integrantes = tk.Button(ventana, activebackground="#0085fa", bg="#00bbfa", text="Integrantes", command=pantalla_integrantes, width=30, height=3)
+boton_integrantes = tk.Button(ventana, activebackground="#0085fa", bg="#00bbfa", text="Integrantes",  font=("Times New Roman", 10), command=pantalla_integrantes, width=30, height=3)
 boton_integrantes.grid(row=3, column=0, padx=10, pady=10)
 
 # Label de bienvenida (centrado y en la parte superior)
-bienvenida = tk.Label(home, bg="#ffc54a", text="Bienvenido, selecciona tu calculadora", font=("Times New Roman", 12))
+bienvenida = tk.Label(home, bg="#00183e", fg="#ffc54a", text="Bienvenido, selecciona tu calculadora", font=("Times New Roman", 10))
 bienvenida.grid(row=0, column=2, padx=310, pady=(20, 10), sticky="n")
 
 # Botones para regresar a la pantalla principal
@@ -106,7 +106,7 @@ boton_volver_matematica = tk.Button(matematica_discreta, text="Volver al Inicio"
 boton_volver_matematica.grid(row=4, column=1, padx=10, pady=10)
 
 boton_volver_integrantes = tk.Button(integrantes, activebackground="#a93a48", bg="#c93a48", text="Volver al Inicio", command=pantalla_inicio, width=25, height=3)
-boton_volver_integrantes.grid(row=4, column=0, padx=0, pady=90)
+boton_volver_integrantes.grid(row=4, column=0, padx=10, pady=50)
 
 # Botón de cierre con imagen
 icono = tk.PhotoImage(file=os.path.join(carpeta_recursos, "pistola.png"))
@@ -127,7 +127,7 @@ tree.insert("", "end", values=("Christopher Ricardo Garcia Giron", "0907-24-1008
 tree.insert("", "end", values=("Miguel José Alfaro Vásquez","0907-24-12948", "Encargado calculadora Matematica discreta"))
 tree.insert("", "end", values=("José Miguel Castillo Pérez","0907-24-1862", "Encargado calculadora algebra lineal"))
 tree.insert("", "end", values=("Diego Alejandro Fernández González","0907-24-25569", "Encargado calculadora algebra lineal"))
-tree.pack(padx=10, pady=10)  # Usamos pack en lugar de grid para este caso
+tree.pack(padx=10, pady=50)  # Usamos pack en lugar de grid para este caso
 
 # Botón para regresar a la pantalla principal
 boton_volver_integrantes = tk.Button(frame_integrantes, text="Volver al Inicio", command=pantalla_inicio)

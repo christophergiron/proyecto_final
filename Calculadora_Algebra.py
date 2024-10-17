@@ -2,7 +2,8 @@
 import tkinter as tk
 from tkinter import messagebox
 import numpy as np
-import sys 
+import sys
+from fractions import Fraction
 
 CA_Win = tk.Tk()
 CA_Win.title("Calculadora de matrices")
@@ -10,21 +11,26 @@ CA_Win.geometry("625x400")
 frame_matriz = None
 frame_matriz_M2 = None
 boton_calcular = None
+boton_calcular_cramer = None
 
+#Menu principal
 def menu_principal():
     for menu1 in CA_Win.winfo_children():
         menu1.destroy()
         
+    #Funcion encargada del boton de regresar
     def backButton():
         boton_return = tk.Button(CA_Win, text="Regresar", command=menu_principal)
         boton_return.grid(row=0, column=0, padx=10, pady=10)
 
+    #Funcion encargada de limpiar los botones tras cambiar de pestaña
     def clean_buttons():
         instruccion.grid_forget()
         boton.grid_forget()
         botonS.grid_forget()
         botonM.grid_forget()
-
+        
+    #Comienzo del codigo para obtener la matriz inversa
     def inversa():
         clean_buttons()
         instruccionInv = tk.Label(CA_Win, text="Ingrese el tamaño de la matriz: ")
@@ -54,7 +60,7 @@ def menu_principal():
                 columnas = int(columna_e2.get())
 
                 if filas <= 1 | columnas <= 1:
-                    messagebox.showerror("", "El tamaño debe ser mayor a 1.")
+                    messagebox.showerror("Error", "El tamaño debe ser mayor a 1.")
                 else:
                     # Crear un nuevo frame para la matriz
                     frame_matriz = tk.Frame(CA_Win)
@@ -79,17 +85,15 @@ def menu_principal():
                                 resultado_inversa.config(text=f"Inversa de la matriz:\n{matriz_inversa}")
                             
                         except np.linalg.LinAlgError:
-                            messagebox.showerror("","Error: La matriz no es invertible.")
+                            messagebox.showerror("Error","La matriz no es invertible.")
                         except Exception as e:
-                            messagebox.showerror("","Error Revisa La descripcion")
-                            resultado_inversa.config(text=f"Error: {str(e)}")
+                            messagebox.showerror("Error", f"Error: {str(e)}")
 
                     boton_calcular = tk.Button(CA_Win, text="Calcular Inversa", command=calcular_inversa)
                     boton_calcular.grid(row=4 + filas, column=0, columnspan=2, padx=10, pady=10)
 
             except ValueError as e:
-                resultado_inversa.config(text=f"Error: {str(e)}")
-                messagebox.showerror("","Error Revisa La descripcion")
+                messagebox.showerror("Error", f"Error: {str(e)}")
 
         boton_generar = tk.Button(CA_Win, text="Generar Matriz", command=generar_matriz)
         boton_generar.grid(row=3, column=0, columnspan=2, padx=10, pady=10)
@@ -99,6 +103,7 @@ def menu_principal():
 
         backButton()
 
+    #Comienzo del codigo de la multiplicacion
     def multi():
         clean_buttons()
         instruccionMulti = tk.Label(CA_Win, text="Ingrese el tamaño de sus matrices: ")
@@ -130,6 +135,7 @@ def menu_principal():
         columna_e2 = tk.Entry(CA_Win, width=5)
         columna_e2.grid(row=3, column=3)
         
+        #Genera la cuadricula de la matriz
         def generar_matriz():
             global frame_matriz, frame_matriz_M2, boton_calcular
             # Si existe un frame de matriz previo, eliminarlo
@@ -151,10 +157,10 @@ def menu_principal():
                 columnas_M2 = int(columna_e2.get())
 
                 if filas <= 1 or columnas <= 1 or filas_M2 <= 1 or columnas_M2 <= 1:
-                    messagebox.showerror("", "El tamaño debe ser mayor a 1.")
+                    messagebox.showerror("Error", "El tamaño debe ser mayor a 1.")
                 else:
                     if filas != columnas_M2:
-                        messagebox.showerror("", "Estas matrices no se pueden multiplicar!!!")
+                        messagebox.showerror("Error", "Estas matrices no se pueden multiplicar!!!")
                     else:
                         # Crear un nuevo frame para la matriz
                         frame_matriz = tk.Frame(CA_Win)
@@ -191,17 +197,15 @@ def menu_principal():
                                 # Mostrar el resultado en una nueva ventana o actualizar algún widget para mostrarlo
                                 resultado_multi.config(text=f"Resultado:\n{resultado}")
                             except ValueError as e:
-                                resultado_multi.config(text=f"Error: {str(e)}")
-                                messagebox.showerror("","Error, revisa la descripcion")
+                                messagebox.showerror("Error", f"Error: {str(e)}")
                             except Exception as e:
-                                resultado_multi.config(text=f"Error inesperado: {str(e)}")
+                                messagebox.showerror("Error", f"Error inesperado: {str(e)}")
                 
                     boton_calcular = tk.Button(CA_Win, text="Multiplicar", command=calculoEnSi)
                     boton_calcular.grid(row=6 + filas, column=1, columnspan=2, padx=10, pady=10)
                 
             except ValueError as e:
-                resultado_multi.config(text=f"Error: {str(e)}")
-                messagebox.showerror("","Error, revisa la descripcion")
+                messagebox.showerror("Error", f"Error: {str(e)}")
                 
         boton_generar = tk.Button(CA_Win, text="Generar Matriz", command=generar_matriz)
         boton_generar.grid(row=6, column=1, columnspan=2, padx=10, pady=10)
@@ -211,21 +215,110 @@ def menu_principal():
                 
         backButton()
         
+    #Inicio del codigo del sistema de ecuaciones
     def sis_ecu_sub():
+        metodo_frame = tk.Frame(CA_Win)
+        
         def clean_buttons_sub1():
             instruccionMetodo.grid_forget()
             boton_cramer.grid_forget()
             boton_Gaus.grid_forget()
             boton_return_main.grid_forget()
-            
+        
+        #Comienzo del metodo de gauss jordan
         def sis_ecu_Gaus():
+            #limpia los botones dentro del submenu al cambiar de submenu
             clean_buttons_sub1()
-            boton_return = tk.Button(CA_Win, text="Regresar", command=sis_ecu_sub)
+            boton_return = tk.Button(CA_Win, text="Regresar", command=lambda: regresar())
             boton_return.grid(row=0, column=0, padx=10, pady=10)
             
+            # Boton encargado de regresar al submenu anterior
+            def regresar():
+                clean_buttons_sub2_ga()
+                resultado_label.config(text="")
+                sis_ecu_sub()    
+            
+            #limpia los botones dentro del submenu al regresar al menu anterior
+            def clean_buttons_sub2_ga():
+                instruccionSize.grid_forget()
+                boton_2x2.grid_forget()
+                boton_3x3.grid_forget()
+                boton_4x4.grid_forget()
+                
+                if frame_matriz is not None:
+                    frame_matriz.destroy()
+                    
+                if boton_calcular is not None:
+                    boton_calcular.destroy()
+            
+            def generar_matriz(filas, columnas):
+                global frame_matriz, boton_calcular
+                frame_matriz = tk.Frame(CA_Win)
+                frame_matriz.grid(row=4, column=1, columnspan=columnas)
+                
+                entradas_matriz = []
+                for i in range(filas):
+                    fila = []
+                    for j in range(columnas):
+                        entrada = tk.Entry(frame_matriz, width=5)
+                        entrada.grid(row=i, column=j, padx=5, pady=5)
+                        fila.append(entrada)
+                    entradas_matriz.append(fila)
+                    
+                boton_calcular = tk.Button(CA_Win, text="Calcular", command=lambda: calcular_solucion(entradas_matriz))
+                boton_calcular.grid(row=6 + filas, column=1, columnspan=2, padx=5, pady=5)
+            
+            def calcular_solucion(entradas):
+                try:
+                    matriz = np.array([[float(entradas[i][j].get()) for j in range(len(entradas[0]))] for i in range(len(entradas))])
+                    filas, columnas = matriz.shape
+                    argumento = np.hstack((matriz[:, :-1], matriz[:, -1].reshape(-1, 1)))
+                    
+                    for i in range(filas):
+                        pivot = argumento[i, i]
+                        if pivot == 0:
+                            messagebox.showerror("Error", "El sistema no tiene solución única.")
+                            return
+                        argumento[i] = argumento[i] / pivot
+                        
+                        for j in range(filas):
+                            if j != i:
+                                argumento[j] -= argumento[j, i] * argumento[i]
+                                
+                    resultado = argumento[:, -1]
+                    resultado_label.config(text=f"Solución:\n{resultado}")
+                except Exception as e:
+                    messagebox.showerror("Error", f"Error al calcular la solución: {str(e)}")
+                    
+            
+            def doble():
+                clean_buttons_sub2_ga()
+                generar_matriz(2, 3)
+                
+            def triple():
+                clean_buttons_sub2_ga()
+                generar_matriz(3, 4)
+                
+            def cuadruple():
+                clean_buttons_sub2_ga()
+                generar_matriz(4, 5)
+                
+            
+            instruccionSize = tk.Label(CA_Win, text="Seleccione el tamaño del sistema de ecuaciones")
+            instruccionSize.grid(row=0, column=2, columnspan=4, padx=10, pady=10)
+                
+            boton_2x2 = tk.Button(CA_Win, text="2x2", command=doble)
+            boton_2x2.grid(row=1, column=2, padx=10, pady=10)
+            boton_3x3 = tk.Button(CA_Win, text="3x3", command=triple)
+            boton_3x3.grid(row=1, column=3, padx=10, pady=10)
+            boton_4x4 = tk.Button(CA_Win, text="4x4", command=cuadruple)
+            boton_4x4.grid(row=1, column=4, padx=10, pady=10)
+            
+            resultado_label = tk.Label(CA_Win, text="")
+            resultado_label.grid(row=7, column=1, columnspan=3, padx=10, pady=10)
+            
+        #Comienzo del metodo de cramer
         def sis_ecu_cramer():
-            # aun en progreso
-            #🕆︎■︎ ❍︎♏︎■︎⬧︎♋︎🙰♏︎ ♍︎□︎❒︎♎︎♓︎♋︎●︎ ♍︎♒︎❒︎♓︎⬧︎ ❍︎♏︎ ♍︎♋︎♑︎□︎ ♏︎■︎ ⧫︎◆︎ ♏︎⌧︎♓︎⬧︎⧫︎♏︎■︎♍︎♓︎♋︎ ◻︎□︎❒︎ ●︎♋︎ ♓︎♎︎♏︎♋︎ ♎︎♏︎ ●︎□︎⬧︎ ⬧︎◆︎♌︎ ❍︎♏︎■︎◆︎⬧︎ ❍︎♏︎ ♍︎□︎❍︎◻︎●︎♓︎♍︎♋︎⬧︎⧫︎♏︎ ●︎♋︎ ❖︎♓︎♎︎♋︎ 👍︎❄︎💣︎
             clean_buttons_sub1()
             
             def clean_buttons_sub2():
@@ -234,21 +327,43 @@ def menu_principal():
                 boton_3x3.grid_forget()
                 boton_4x4.grid_forget()
                 
-            def doble():
-                print("S3A")
+                if frame_matriz is not None:
+                    frame_matriz.destroy()
+                    
+                if boton_calcular_cramer is not None:
+                    boton_calcular_cramer.destroy()
+                    
+                resultado_label.config(text="")
+                
+            def generar_matriz(filas, columnas):
+                global frame_matriz, boton_calcular_cramer
                 clean_buttons_sub2()
-                instruccionCram = tk.Label(CA_Win, text="Ingrese su sistema de ecuaciones")
-                instruccionCram.grid(row=0, column=1, columnspan=2, padx=10, pady=10)
+                
+                frame_matriz = tk.Frame(CA_Win)
+                frame_matriz.grid(row=4, column=1, columnspan=columnas)
+
+                entradas_matriz = []
+                for i in range(filas):
+                    fila = []
+                    for j in range(columnas):
+                        entrada = tk.Entry(frame_matriz, width=5)
+                        entrada.grid(row=i, column=j, padx=5, pady=5)
+                        fila.append(entrada)
+                    entradas_matriz.append(fila)
+                    
+                boton_calcular_cramer = tk.Button(CA_Win, text="Calcular", command=lambda: calcular_solucion(entradas_matriz))
+                boton_calcular_cramer.grid(row=6 + filas, column=1, columnspan=2, padx=5, pady=5)
+                    
+            def doble():
+                generar_matriz(2, 3)
                 
             def triple():
-                print("S3B")
-                clean_buttons_sub1()
+                generar_matriz(3, 4)
                 
             def cuadruple():
-                print("S3C")
-                clean_buttons_sub2()
+                generar_matriz(4, 5)
                 
-            boton_return = tk.Button(CA_Win, text="Regresar", command=sis_ecu_sub)
+            boton_return = tk.Button(CA_Win, text="Regresar", command=lambda: [clean_buttons_sub2(), sis_ecu_sub()])
             boton_return.grid(row=0, column=0, padx=10, pady=10)
             
             instruccionSize = tk.Label(CA_Win, text="Seleccione el tamaño del sistema de ecuaciones")
@@ -260,7 +375,41 @@ def menu_principal():
             boton_3x3.grid(row=1, column=3, padx=10, pady=10)
             boton_4x4 = tk.Button(CA_Win, text="4x4", command=cuadruple)
             boton_4x4.grid(row=1, column=4, padx=10, pady=10)
+            
+            resultado_label = tk.Label(CA_Win, text="")
+            resultado_label.grid(row=7, column=1, columnspan=3, padx=10, pady=10)
+            
+            def calcular_solucion(entradas):
+                try:
+                    matriz = np.array([[float(entradas[i][j].get()) for j in range(len(entradas[0]))] for i in range(len(entradas))])
+                    filas, columnas = matriz.shape
+                    
+                    if filas != columnas - 1:
+                        messagebox.showerror("Error", "La matriz no tiene un formato válido.")
+                        return
+                    
+                    A = matriz[:, :-1]
+                    b = matriz[:, -1]
+                    
+                    det_A = np.linalg.det(A)
+                    if det_A == 0:
+                        messagebox.showerror("Error", "El sistema no tiene solución única.")
+                        return
+                    
+                    soluciones = []
+                    for i in range(len(b)):
+                        Ai = np.copy(A)
+                        Ai[:, i] = b
+                        solucion = np.linalg.det(Ai) / det_A
+                    soluciones.append(Fraction(solucion).limit_denominator())
+                        
+                    soluciones_str = ', '.join([str(sol) for sol in soluciones])
+                    resultado_label.config(text=f"Solución:\n{soluciones_str}")
+                    
+                except Exception as e:
+                    messagebox.showerror("Error", f"Error al calcular la solución: {str(e)}")
 
+#Menu del sistema de ecuaciones
         instruccionMetodo = tk.Label(CA_Win, text="Seleccione el metodo a utilizar")
         instruccionMetodo.grid(row=0, column=5, columnspan=5, padx=10, pady=10)
         
@@ -273,6 +422,9 @@ def menu_principal():
         boton_return_main = tk.Button(CA_Win, text="Regresar", command=menu_principal)
         boton_return_main.grid(row=0, column=0, padx=10, pady=10)
         
+        metodo_frame.grid(row=1, column=0)
+
+    # Encargado de iniciar el submuenu para seleccionar metodos en el sistema de ecuaciones      
     def sis_ecu():
         clean_buttons()
         backButton()

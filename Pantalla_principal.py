@@ -19,7 +19,7 @@ pygame.mixer.init()
 def reproducir_sonido_cerrar():
     pygame.mixer.music.load(os.path.join(carpeta_recursos, "persona.mp3"))
     pygame.mixer.music.play()
-    ventana.after(2500, ventana.destroy)
+    ventana.after(2000, ventana.destroy)
 
 # Funciones de navegación para las pantallas
 def pantalla_inicio():

@@ -99,31 +99,31 @@ def operaciones_matematica_discreta(frame, volver_inicio,):
     camb_rep = tk.StringVar(value="Sin Repeticion") 
 
     prilab = tk.Label(panta_permu, bg="#ffc54a", text="Ingrese El Primer Valor: ", font=("Times New Roman", 10)) #coloca el texto que pide introducir los numeros
-    prilab.grid(row=2, column=0, padx=10, pady=10)
+    prilab.grid(row=2, column=1, padx=10, pady=10)
 
     seglab = tk.Label(panta_permu, bg="#ffc54a", text="Ingrese El segundo valor", font=("Times New Roman", 10))
-    seglab.grid(row=3, column=0, padx=10, pady=10)
+    seglab.grid(row=3, column=1, padx=10, pady=10)
 
     entra_pri = tk.Entry(panta_permu, bg="#79d7fd", font=("Times New Roman", 10), width=30) #deja introducir el valor del primer valor
-    entra_pri.grid(row=2, column=1, padx=10, pady=10)
+    entra_pri.grid(row=2, column=2, padx=10, pady=10)
 
     entra_seg = tk.Entry(panta_permu, bg="#79d7fd", font=("Times New Roman", 10), width=30) # lo mismo que arriba pero con el segundo valor
-    entra_seg.grid(row=3, column=1, padx=10, pady=10)
+    entra_seg.grid(row=3, column=2, padx=10, pady=10)
 
     rep = tk.Label(panta_permu, bg="#ffc54a",text="Tipo:", font=("Times New Roman", 10)) #coloca un texto que dice tipo para saber que repeticion se esta usando
-    rep.grid(row=4, column=0, padx=10, pady=10)
+    rep.grid(row=4, column=1, padx=2, pady=10)
 
     norep = tk.Radiobutton(panta_permu, activebackground="#0085fa", bg="#00bbfa",text="Sin Repeticion", variable=camb_rep, value="Sin Repeticion", font=("Times New Roman", 10)) #es el boton que se muestra, solo que este al ser un radiobutton, es un boton de bolita
-    norep.grid(row=4, column=1, padx=10, pady=10)
+    norep.grid(row=4, column=2,  padx=0, pady=10)
 
     conrep = tk.Radiobutton(panta_permu, activebackground="#0085fa",bg="#00bbfa", text="Con Repeticion", variable=camb_rep, value="Con Repeticion", font=("Times New Roman", 10))  # lo mismo que arriba, pero muestra con repeticion en lugar de sin repeticion
-    conrep.grid(row=4, column=2, padx=10, pady=10)
+    conrep.grid(row=4, column=2, columnspan=20, padx=0, pady=10)
 
     btncalc = tk.Button(panta_permu, activebackground="#0085fa",bg="#00bbfa", text="Calcular", command=calc, font=("Times New Roman", 10), width=50, height=2) # es el boton que llama a la funcion de calcular 
-    btncalc.grid(row=6, column=0, columnspan=2, pady=10)
+    btncalc.grid(row=6, column=1, columnspan=2, pady=10)
 
     result = tk.Label(panta_permu, bg="#ffc54a", text="", font=("Times New Roman", 10,)) #muestra los resultados de las operaciones
-    result.grid(row=7, column=0, columnspan=2, pady=10)
+    result.grid(row=7, column=1, columnspan=2, pady=10)
 
     btnpatras_permu = tk.Button(panta_permu, activebackground="#a93a48",bg="#c93a48", text="Regresar", command=lambda: mostrar(panta_princi), font=("Times New Roman", 10), width=10, height=2) #es el boton que regresa a la pantalla de inicio de la calculadora, el nombre de la extension lo deja muy claro
     btnpatras_permu.grid(row=1, column=0, pady=10)
@@ -135,31 +135,31 @@ def operaciones_matematica_discreta(frame, volver_inicio,):
     btnnaada.grid(row=9, column=3, padx=310, pady=3000)
     
     prilabc = tk.Label(panta_comb, bg="#ffc54a", text="Ingrese El Primer Valor: ", font=("Times New Roman", 10))
-    prilabc.grid(row=2, column=0, padx=10, pady=10)
+    prilabc.grid(row=2, column=1, padx=10, pady=10)
 
     seglabc = tk.Label(panta_comb, bg="#ffc54a", text="Ingrese El segundo valor", font=("Times New Roman", 10))
-    seglabc.grid(row=3, column=0, padx=10, pady=10)
+    seglabc.grid(row=3, column=1, padx=10, pady=10)
 
     entra_pric = tk.Entry(panta_comb, bg="#79d7fd", font=("Times New Roman", 10), width=30)
-    entra_pric.grid(row=2, column=1, padx=10, pady=10)
+    entra_pric.grid(row=2, column=2, padx=10, pady=10)
 
     entra_segc = tk.Entry(panta_comb, bg="#79d7fd", font=("Times New Roman", 10), width=30)
-    entra_segc.grid(row=3, column=1, padx=10, pady=10)
+    entra_segc.grid(row=3, column=2, padx=10, pady=10)
 
     repc = tk.Label(panta_comb, bg="#ffc54a", text="Tipo:", font=("Times New Roman", 10))
-    repc.grid(row=4, column=0, padx=5, pady=10)
+    repc.grid(row=4, column=1, padx=10, pady=10)
 
     norepc = tk.Radiobutton(panta_comb, activebackground="#0085fa",bg="#00bbfa", text="Sin Repeticion", variable=camb_rep, value="Sin Repeticion", font=("Times New Roman", 10))
-    norepc.grid(row=4, column=1, padx=10, pady=10)
+    norepc.grid(row=4, column=2, padx=0, pady=10)
 
     conrepc = tk.Radiobutton(panta_comb, activebackground="#0085fa", bg="#00bbfa", text="Con Repeticion", variable=camb_rep, value="Con Repeticion", font=("Times New Roman", 10))
-    conrepc.grid(row=4, column=2, padx=10, pady=10)
+    conrepc.grid(row=4, column=2, columnspan=20,padx=10, pady=10)
 
     btncalcc = tk.Button(panta_comb, activebackground="#0085fa",bg="#00bbfa", text="Calcular", command=calc, font=("Times New Roman", 10), width=50, height=2)
-    btncalcc.grid(row=6, column=0, columnspan=2, pady=10)
+    btncalcc.grid(row=6, column=1, columnspan=2, pady=10)
 
     resultc = tk.Label(panta_comb, bg="#ffc54a", text="", font=("Times New Roman", 10))
-    resultc.grid(row=7, column=0, columnspan=2, pady=10)
+    resultc.grid(row=7, column=1, columnspan=2, pady=10)
 
     btnpatras_com = tk.Button(panta_comb, activebackground="#a93a48", bg="#c93a48", text="Regresar", command=lambda: mostrar(panta_princi), font=("Times New Roman", 10), width=10, height=2)
     btnpatras_com.grid(row=1, column=0, pady=10)

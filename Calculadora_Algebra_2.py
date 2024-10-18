@@ -16,6 +16,8 @@ frame_calc_gauss = tk.Frame(Frame2)
 frame_calc_cramer = tk.Frame(Frame2)
 
 boton_calcular = None
+boton_graficar = None
+resultado_label = None
 entradas_matriz = []
 
 def pantalla_principal():
@@ -69,7 +71,7 @@ def pantalla_Sis_ecuaciones():
     boton_calc_cramer.grid(row=3, column=1, padx=10, pady=10)
 
 def Calculadora_gauss():
-    global boton_calcular
+    global boton_calcular, boton_graficar
     frame_calc_gauss.grid()
     frame_pantalla_sis_ecuaciones.grid_forget()
     frame_Pantalla_Minversa.grid_forget()
@@ -83,7 +85,7 @@ def Calculadora_gauss():
     sis_ecu_Gaus()
 
 def sis_ecu_Gaus():
-    global boton_calcular, entradas_matriz
+    global boton_calcular, boton_graficar, entradas_matriz, resultado_label
 
     def limpiar_matriz():
         # Eliminar todas las entradas anteriores
@@ -91,10 +93,18 @@ def sis_ecu_Gaus():
             for entrada in fila:
                 entrada.destroy()
         entradas_matriz.clear()
-    
+
+    def limpiar_resultado_y_boton():
+        # Limpiar el resultado anterior
+        resultado_label.config(text="")
+        # Si hay un botón de graficar, lo eliminamos
+        if boton_graficar is not None:
+            boton_graficar.destroy()
+
     def generar_matriz(filas, columnas):
-        global boton_calcular, entradas_matriz
+        global boton_calcular, boton_graficar, entradas_matriz
         limpiar_matriz()  # Limpiar cualquier matriz previa
+        limpiar_resultado_y_boton()  # Limpiar el resultado y botón previo
         
         entradas_matriz = []
         for i in range(filas):
@@ -107,10 +117,12 @@ def sis_ecu_Gaus():
         
         if boton_calcular is not None:
             boton_calcular.destroy()
+
         boton_calcular = tk.Button(frame_calc_gauss, text="Calcular", command=lambda: calcular_solucion(entradas_matriz))
         boton_calcular.grid(row=6 + filas, column=1, columnspan=2, padx=5, pady=5)
 
     def calcular_solucion(entradas):
+        limpiar_resultado_y_boton()  # Limpiar cualquier resultado y botón anterior
         try:
             matriz = np.array([[float(entradas[i][j].get()) for j in range(len(entradas[0]))] for i in range(len(entradas))])
             filas, columnas = matriz.shape
@@ -130,13 +142,16 @@ def sis_ecu_Gaus():
             resultado = argumento[:, -1]
             resultado_label.config(text=f"Solución:\n{resultado}")
             
+            # Crear botón de graficar solo si el cálculo fue exitoso
+            global boton_graficar
             boton_graficar = tk.Button(frame_calc_gauss, text="Mostrar Gráfica", command=lambda: mostrar_grafica(resultado))
             boton_graficar.grid(row=8, column=1, columnspan=2, padx=5, pady=5)
             
         except Exception as e:
             messagebox.showerror("Error", f"Error al calcular la solución: {str(e)}")
-            
+    
     def mostrar_grafica(resultado):
+        plt.close('all')  # Cerrar cualquier gráfica previa
         if len(resultado) == 2:
             x_vals = np.linspace(-10, 10, 100)
             y_vals = resultado[0] * x_vals + resultado[1]

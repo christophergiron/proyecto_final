@@ -4,6 +4,7 @@ from tkinter import messagebox
 import numpy as np
 import sys
 from fractions import Fraction
+import matplotlib.pyplot as plt
 
 CA_Win = tk.Tk()
 CA_Win.title("Calculadora de matrices")
@@ -287,9 +288,41 @@ def menu_principal():
                                 
                     resultado = argumento[:, -1]
                     resultado_label.config(text=f"Solución:\n{resultado}")
+                    
+                    boton_graficar = tk.Button(CA_Win, text="Mostrar Gráfica", command=lambda: mostrar_grafica(resultado))
+                    boton_graficar.grid(row=8, column=1, columnspan=2, padx=5, pady=5)
+                    
                 except Exception as e:
                     messagebox.showerror("Error", f"Error al calcular la solución: {str(e)}")
                     
+            def mostrar_grafica(resultado):
+                if len(resultado) == 2:
+                    x_vals = np.linspace(-10, 10, 100)
+                    y_vals = resultado[0] * x_vals + resultado[1]
+                    
+                    plt.plot(x_vals, y_vals, label='Solución del sistema')
+                    plt.xlabel('X')
+                    plt.ylabel('Y')
+                    plt.title('Gráfica del sistema 2x2')
+                    plt.legend()
+                    plt.grid(True)
+                    plt.show()
+                elif len(resultado) == 3:
+                    
+                    fig = plt.figure()
+                    ax = fig.add_subplot(111, projection='3d')
+                    
+                    x_vals = np.linspace(-10, 10, 100)
+                    y_vals = np.linspace(-10, 10, 100)
+                    X, Y = np.meshgrid(x_vals, y_vals)
+                    Z = resultado[0] * X + resultado[1] * Y + resultado[2]
+                    
+                    ax.plot_surface(X, Y, Z, cmap='viridis')
+                    ax.set_xlabel('X')
+                    ax.set_ylabel('Y')
+                    ax.set_zlabel('Z')
+                    plt.title('Gráfica del sistema 3x3')
+                    plt.show()
             
             def doble():
                 clean_buttons_sub2_ga()

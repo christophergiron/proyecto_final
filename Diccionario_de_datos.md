@@ -1,4 +1,4 @@
-Diccionario de Datos
+# **Diccionario de Datos**
 tk.Frame:
 panta_princi
 panta_permu

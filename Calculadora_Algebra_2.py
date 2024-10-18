@@ -22,6 +22,12 @@ boton_graficar_cramer = None
 resultado_label = None
 entradas_matriz = []
 
+def limpiar_frame(frame, except_widgets=[]):
+    """Eliminar todos los widgets de un frame, excepto los que se especifiquen."""
+    for widget in frame.winfo_children():
+        if widget not in except_widgets:
+            widget.destroy()
+        
 def pantalla_principal():
     Pan_principal.grid()
     frame_Pantalla_Minversa.grid_forget()
@@ -41,6 +47,7 @@ def pantalla_Minversa():
     frame_pantalla_sis_ecuaciones.grid_forget()
     frame_calc_gauss.grid_forget()
     frame_calc_cramer.grid_forget()
+    Calculadora_inversa()
     
     boton_inversa.grid_forget()
     boton_Multi.grid_forget()
@@ -98,6 +105,92 @@ def Calculadora_cramer():
     boton_Multi.grid_forget()
     boton_sis_ecuaciones.grid_forget()
     sis_ecu_cramer()
+def Calculadora_inversa():
+    # Etiqueta de instrucciones
+    instruccion_inversa = tk.Label(frame_Pantalla_Minversa, text="Ingrese las dimensiones de su matriz")
+    instruccion_inversa.grid(row=0, column=1, columnspan=2, padx=10, pady=10)
+
+    # Etiquetas y entradas para filas
+    filas_label = tk.Label(frame_Pantalla_Minversa, text="Filas:")
+    filas_label.grid(row=1, column=0, padx=10, pady=5)
+    filas_entry = tk.Entry(frame_Pantalla_Minversa, width=3)  # Ajustar tamaño
+    filas_entry.grid(row=1, column=1, padx=10, pady=5)
+
+    # Etiquetas y entradas para columnas
+    columnas_label = tk.Label(frame_Pantalla_Minversa, text="Columnas:")
+    columnas_label.grid(row=2, column=0, padx=10, pady=5)
+    columnas_entry = tk.Entry(frame_Pantalla_Minversa, width=3)  # Ajustar tamaño
+    columnas_entry.grid(row=2, column=1, padx=10, pady=5)
+
+    # Botón para generar la matriz
+    boton_generar_matriz = tk.Button(frame_Pantalla_Minversa, text="Generar Matriz",
+                                      command=lambda: generar_matriz(filas_entry.get(), columnas_entry.get(), boton_regresar, boton_generar_matriz, instruccion_inversa, filas_label, filas_entry, columnas_label, columnas_entry))
+    boton_generar_matriz.grid(row=3, column=0, columnspan=2, padx=10, pady=10)
+
+    # Botón de regresar a la pantalla principal
+    boton_regresar = tk.Button(frame_Pantalla_Minversa, text="Regresar", command=pantalla_principal)
+    boton_regresar.grid(row=0, column=0, padx=10, pady=10)
+
+def generar_matriz(filas, columnas, boton_regresar, boton_generar_matriz, instruccion_inversa, filas_label, filas_entry, columnas_label, columnas_entry):
+    # Validación para que las entradas sean numéricas
+    try:
+        filas = int(filas)
+        columnas = int(columnas)
+    except ValueError:
+        messagebox.showerror("Error", "Por favor ingrese valores numéricos.")
+        return
+
+    # Limpiar el frame, excepto los controles de entrada, las etiquetas y los botones
+    limpiar_frame(frame_Pantalla_Minversa, excepciones=[boton_regresar, boton_generar_matriz, instruccion_inversa, filas_label, filas_entry, columnas_label, columnas_entry])
+
+    matriz_entries = []
+
+    # Generación de entradas para cada celda de la matriz
+    for i in range(filas):
+        row_entries = []
+        for j in range(columnas):
+            entry = tk.Entry(frame_Pantalla_Minversa, width=5)
+            entry.grid(row=i + 3, column=j + 3, padx=5, pady=5)
+            row_entries.append(entry)
+        matriz_entries.append(row_entries)
+
+    # Comprobar si la matriz es cuadrada para habilitar el cálculo de la inversa
+    if filas == columnas:
+        boton_calcular_inversa = tk.Button(frame_Pantalla_Minversa, text="Calcular Matriz Inversa",
+                                           command=lambda: calcular_inversa(filas, matriz_entries))
+        boton_calcular_inversa.grid(row=filas + 4, column=0, columnspan=columnas, padx=10, pady=10)
+    else:
+        messagebox.showwarning("Advertencia", "La matriz debe ser cuadrada para calcular la inversa.")
+
+def limpiar_frame(frame, excepciones=[]):
+    # Eliminar todos los widgets en el frame excepto aquellos en la lista de excepciones
+    for widget in frame.winfo_children():
+        if widget not in excepciones:
+            widget.grid_forget()
+
+def calcular_inversa(tamano, matriz_entries):
+    try:
+        matriz = np.zeros((tamano, tamano))
+        for i in range(tamano):
+            for j in range(tamano):
+                matriz[i, j] = float(matriz_entries[i][j].get())
+
+        matriz_inversa = np.linalg.inv(matriz)
+        mostrar_resultado(matriz_inversa, tamano)
+    except np.linalg.LinAlgError:
+        messagebox.showerror("Error", "La matriz no es invertible.")
+    except ValueError:
+        messagebox.showerror("Error", "Por favor, ingrese valores numéricos válidos.")
+
+def mostrar_resultado(matriz_inversa, tamano):
+    # Mostramos los resultados justo debajo de la matriz ingresada
+    tk.Label(frame_Pantalla_Minversa, text="Matriz Inversa:").grid(row=tamano + 5, column=0, columnspan=tamano, padx=10, pady=10)
+
+    # Mostramos los valores de la matriz inversa debajo de la matriz original
+    for i in range(matriz_inversa.shape[0]):
+        for j in range(matriz_inversa.shape[1]):
+            tk.Label(frame_Pantalla_Minversa, text=f"{matriz_inversa[i, j]:.2f}").grid(row=i + tamano + 6, column=j, padx=5, pady=5)
+
 
 def sis_ecu_Gaus():
     global boton_calcular, boton_graficar, entradas_matriz, resultado_label

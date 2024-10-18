@@ -72,7 +72,7 @@ def operaciones_matematica_discreta(frame, volver_inicio,):
         except ValueError: #muestra error si no se introduce un numero y se introduce una letra o si no se introduce nada
             messagebox.showerror("", "El valor introducido no es valido, Introduce Por favor un Numero")
             return
-    nosirvedenada = tk.Label(panta_princi,  bg="#00183e")
+    nosirvedenada = tk.Label(panta_princi,  bg="#00183e") #solo funciona para bajar un poco los botones
     nosirvedenada.grid(row=0, column=3, padx=302, pady=30)   
     
     #Botones para enselar las pantallas de permutacion y de combinacion, haciendo que se intercambien entre las 3, que son la principal y las otras 2
@@ -88,7 +88,7 @@ def operaciones_matematica_discreta(frame, volver_inicio,):
     btn_volver_menu.grid(row=3, column=3, padx=302, pady=15)
     
     btnnada = tk.Button(panta_princi, text="", bg="#00bbfa", command=volver_inicio)
-    btnnada.grid(row=9, column=3, padx=310, pady=3000)
+    btnnada.grid(row=9, column=3, padx=310, pady=3000) #sirve para poder rellenar el color, este y sus variantes posteriores en el codigo hacen lo mismo
 
     #Pantalla de la permutacion, muestra y lee todos los valores 
     

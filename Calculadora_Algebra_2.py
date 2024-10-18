@@ -8,15 +8,16 @@ Frame2 = tk.Tk()
 Frame2.title("Calculadora de matrices")
 Frame2.geometry("800x500")
 
-#frame_calc_gauss = None
-
 Pan_principal = tk.Frame(Frame2)
 frame_Pantalla_Minversa = tk.Frame(Frame2)
 frame_pantalla_Multiplicacion = tk.Frame(Frame2)
 frame_pantalla_sis_ecuaciones = tk.Frame(Frame2)
 frame_calc_gauss = tk.Frame(Frame2)
 frame_calc_cramer = tk.Frame(Frame2)
-    
+
+boton_calcular = None
+entradas_matriz = []
+
 def pantalla_principal():
     Pan_principal.grid()
     frame_Pantalla_Minversa.grid_forget()
@@ -40,7 +41,7 @@ def pantalla_Minversa():
     boton_inversa.grid_forget()
     boton_Multi.grid_forget()
     boton_sis_ecuaciones.grid_forget()
-    
+
 def pantalla_Multiplicacion():
     frame_pantalla_Multiplicacion.grid()
     frame_Pantalla_Minversa.grid_forget()
@@ -66,38 +67,35 @@ def pantalla_Sis_ecuaciones():
     boton_sis_ecuaciones.grid_forget()
     boton_calc_gauss.grid(row=2, column=1, padx=10, pady=10)
     boton_calc_cramer.grid(row=3, column=1, padx=10, pady=10)
-    
+
 def Calculadora_gauss():
+    global boton_calcular
     frame_calc_gauss.grid()
     frame_pantalla_sis_ecuaciones.grid_forget()
     frame_Pantalla_Minversa.grid_forget()
     frame_pantalla_Multiplicacion.grid_forget()
     Pan_principal.grid_forget()
     frame_calc_cramer.grid_forget()
-    
+
     boton_inversa.grid_forget()
     boton_Multi.grid_forget() 
     boton_sis_ecuaciones.grid_forget()
     sis_ecu_Gaus()
-    
-def Calculadora_cramer():
-    frame_calc_cramer.grid()
-    frame_pantalla_sis_ecuaciones.grid_forget()
-    frame_Pantalla_Minversa.grid_forget()
-    frame_pantalla_Multiplicacion.grid_forget()
-    Pan_principal.grid_forget()
-    frame_calc_gauss.grid_forget()
 
-    boton_inversa.grid_forget()
-    boton_Multi.grid_forget()
-    boton_sis_ecuaciones.grid_forget()
-    
 def sis_ecu_Gaus():
+    global boton_calcular, entradas_matriz
+
+    def limpiar_matriz():
+        # Eliminar todas las entradas anteriores
+        for fila in entradas_matriz:
+            for entrada in fila:
+                entrada.destroy()
+        entradas_matriz.clear()
+    
     def generar_matriz(filas, columnas):
-        if boton_calcular is not None:
-            boton_calcular.destroy()
-            print("nms")
-            
+        global boton_calcular, entradas_matriz
+        limpiar_matriz()  # Limpiar cualquier matriz previa
+        
         entradas_matriz = []
         for i in range(filas):
             fila = []
@@ -106,10 +104,12 @@ def sis_ecu_Gaus():
                 entrada.grid(row=i + 2, column=j + 2, padx=5, pady=5)
                 fila.append(entrada)
             entradas_matriz.append(fila)
-            
+        
+        if boton_calcular is not None:
+            boton_calcular.destroy()
         boton_calcular = tk.Button(frame_calc_gauss, text="Calcular", command=lambda: calcular_solucion(entradas_matriz))
         boton_calcular.grid(row=6 + filas, column=1, columnspan=2, padx=5, pady=5)
-    
+
     def calcular_solucion(entradas):
         try:
             matriz = np.array([[float(entradas[i][j].get()) for j in range(len(entradas[0]))] for i in range(len(entradas))])
@@ -164,24 +164,16 @@ def sis_ecu_Gaus():
             ax.set_zlabel('Z')
             plt.title('Gráfica del sistema 3x3')
             plt.show()
-    
-    def doble():
-        generar_matriz(2, 3)
-        
-    def triple():
-        generar_matriz(3, 4)
-        
-    def cuadruple():
-        generar_matriz(4, 5)
-    
+
+    # Botones para seleccionar el tamaño de la matriz
     instruccionSize = tk.Label(frame_calc_gauss, text="Seleccione el tamaño del sistema de ecuaciones")
     instruccionSize.grid(row=0, column=2, columnspan=4, padx=10, pady=10)
         
-    boton_2x2 = tk.Button(frame_calc_gauss, text="2x2", command=doble)
+    boton_2x2 = tk.Button(frame_calc_gauss, text="2x2", command=lambda: generar_matriz(2, 3))
     boton_2x2.grid(row=1, column=2, padx=10, pady=10)
-    boton_3x3 = tk.Button(frame_calc_gauss, text="3x3", command=triple)
+    boton_3x3 = tk.Button(frame_calc_gauss, text="3x3", command=lambda: generar_matriz(3, 4))
     boton_3x3.grid(row=1, column=3, padx=10, pady=10)
-    boton_4x4 = tk.Button(frame_calc_gauss, text="4x4", command=cuadruple)
+    boton_4x4 = tk.Button(frame_calc_gauss, text="4x4", command=lambda: generar_matriz(4, 5))
     boton_4x4.grid(row=1, column=4, padx=10, pady=10)
     
     boton_regresar_gaus = tk.Button(frame_calc_gauss, text=("regresar"), command=pantalla_Sis_ecuaciones)
@@ -190,6 +182,7 @@ def sis_ecu_Gaus():
     resultado_label = tk.Label(frame_calc_gauss, text="")
     resultado_label.grid(row=7, column=1, columnspan=3, padx=10, pady=10)
     
+# Definición de botones en la pantalla principal
 boton_inversa = tk.Button(Frame2, text="Matriz Inversa",font=("Times New Roman", 10),command=pantalla_Minversa, width=30, height=3)
 boton_inversa.grid(row=2, column=1, padx=10, pady=10)
     
@@ -202,22 +195,8 @@ boton_sis_ecuaciones.grid(row=4, column=1, padx=10, pady=10)
 boton_calc_gauss = tk.Button(frame_pantalla_sis_ecuaciones, text="Metodo de Gauss Jordan",font=("Times New Roman", 10), command=Calculadora_gauss,width=30, height=3)
 boton_calc_gauss.grid(row=2, column=1, padx=10, pady=10)
 
-boton_calc_cramer = tk.Button(frame_pantalla_sis_ecuaciones,text="Metodo de Cramer",font=("Times New Roman", 10),command=Calculadora_cramer,width=30, height=3)
+boton_calc_cramer = tk.Button(frame_pantalla_sis_ecuaciones,text="Metodo de Cramer",font=("Times New Roman", 10),command=lambda: None,width=30, height=3)
 boton_calc_cramer.grid(row=3, column=1, padx=10, pady=10)
 
-#RELLENEN EL MALDITO ESQUELETO SI NO ENTIENDEN ALGO AVISENME PORFAVOR TANTO A MI COMO A MIGUEL 
-#ASEGURENSE DE LLAMAR SIEMPRE A LAS VENTANAS (FRAMES) CORRESPONDIENTES A CADA LUGAR NO ALTEREN EL ESQUELETO ESTA SOLO PARA RELLENAR 
-#MIREN BIEN LAS VARIABLES QUE VAN A DEFINIR NO DUPLIQUEN FUNCIONES SI HAY ALGUNA FUNCION QUE NECESITA SER LLAMADA
-#ES NECESARIO CREAR LA MISMA FUNCION ENCIMA BAJO EL MISMO NOMBRE SIMPLEMENTE LLAMEN A LA FUNCION ORIGINAL QUE CREARON
-#EJEMPLO para llamar a un boton yo creo una funcion llamada def boton_poyo(): dentro de esto meto lo que deberia hacer el boton 
-#si mas tarde creo otro boton y quiero que haga lo mismo simplemente le agrego al boton que llame a boton_poyo para que replique su funcionamiento
-#es mas organizado y se evitan romper la cabeza 
-#TAMPOCO METAN FUNCIONES DENTRO DE FUNCIONES SIEMPRE TRATEN DE QUE TODAS LAS FUNCIONES NUEVAS ESTEN BAJO LA MISMA JERARQUIA 
-#A QUE ME REFIERO A QUE LAS DEFINICIONES ESTEN EN UNA MISMA SANGRIA YA LO QUE ESTE DENTRO DE LA FUNCION NO IMPORTA LA SANGRIA QUE PUEDA LLEGAR A TENER
-#nuevamente se evitan romper los codigos y romper sus cabezas 
-#buenas noches bueno buenos dias mejor dicho
-
-#NMS
 pantalla_principal
-
 Frame2.mainloop()

@@ -99,7 +99,9 @@ def sis_ecu_Gaus():
         resultado_label.config(text="")
         # Si hay un botón de graficar, lo eliminamos
         if boton_graficar is not None:
-            boton_graficar.destroy()
+            boton_graficar.destroy() 
+        plt.close('all')
+        print("Cierrate la cola")
 
     def generar_matriz(filas, columnas):
         global boton_calcular, boton_graficar, entradas_matriz
@@ -151,7 +153,6 @@ def sis_ecu_Gaus():
             messagebox.showerror("Error", f"Error al calcular la solución: {str(e)}")
     
     def mostrar_grafica(resultado):
-        plt.close('all')  # Cerrar cualquier gráfica previa
         if len(resultado) == 2:
             x_vals = np.linspace(-10, 10, 100)
             y_vals = resultado[0] * x_vals + resultado[1]

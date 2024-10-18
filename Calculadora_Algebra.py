@@ -433,8 +433,9 @@ def menu_principal():
                     for i in range(len(b)):
                         Ai = np.copy(A)
                         Ai[:, i] = b
-                        solucion = np.linalg.det(Ai) / det_A
-                    soluciones.append(Fraction(solucion).limit_denominator())
+                        det_Ai = np.linalg.det(Ai)
+                        solucion = det_Ai / det_A
+                        soluciones.append(Fraction(solucion).limit_denominator())
                         
                     soluciones_str = ', '.join([str(sol) for sol in soluciones])
                     resultado_label.config(text=f"Solución:\n{soluciones_str}")

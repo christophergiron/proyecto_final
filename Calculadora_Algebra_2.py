@@ -85,7 +85,6 @@ def Calculadora_gauss():
     sis_ecu_Gaus()
     
 def Calculadora_cramer():
-    global boton_calcular, entradas_matriz
     frame_calc_cramer.grid()
     frame_pantalla_sis_ecuaciones.grid_forget()
     frame_Pantalla_Minversa.grid_forget()
@@ -224,7 +223,7 @@ boton_sis_ecuaciones.grid(row=4, column=1, padx=10, pady=10)
 boton_calc_gauss = tk.Button(frame_pantalla_sis_ecuaciones, text="Metodo de Gauss Jordan",font=("Times New Roman", 10), command=Calculadora_gauss,width=30, height=3)
 boton_calc_gauss.grid(row=2, column=1, padx=10, pady=10)
 
-boton_calc_cramer = tk.Button(frame_pantalla_sis_ecuaciones,text="Metodo de Cramer",font=("Times New Roman", 10),command=lambda: None,width=30, height=3)
+boton_calc_cramer = tk.Button(frame_pantalla_sis_ecuaciones,text="Metodo de Cramer",font=("Times New Roman", 10),command=Calculadora_cramer,width=30, height=3)
 boton_calc_cramer.grid(row=3, column=1, padx=10, pady=10)
 
 pantalla_principal

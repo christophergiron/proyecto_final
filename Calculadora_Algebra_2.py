@@ -217,6 +217,7 @@ boton_calc_cramer.grid(row=3, column=1, padx=10, pady=10)
 #nuevamente se evitan romper los codigos y romper sus cabezas 
 #buenas noches bueno buenos dias mejor dicho
 
+#NMS
 pantalla_principal
 
 Frame2.mainloop()

@@ -8,6 +8,8 @@ Frame2 = tk.Tk()
 Frame2.title("Calculadora de matrices")
 Frame2.geometry("800x500")
 
+#frame_calc_gauss = None
+
 Pan_principal = tk.Frame(Frame2)
 frame_Pantalla_Minversa = tk.Frame(Frame2)
 frame_pantalla_Multiplicacion = tk.Frame(Frame2)
@@ -90,14 +92,18 @@ def Calculadora_cramer():
     boton_Multi.grid_forget()
     boton_sis_ecuaciones.grid_forget()
     
-def sis_ecu_Gaus():     
-    def generar_matriz(filas, columnas): 
+def sis_ecu_Gaus():
+    def generar_matriz(filas, columnas):
+        if boton_calcular is not None:
+            boton_calcular.destroy()
+            print("nms")
+            
         entradas_matriz = []
         for i in range(filas):
             fila = []
             for j in range(columnas):
                 entrada = tk.Entry(frame_calc_gauss, width=5)
-                entrada.grid(row=i, column=j, padx=5, pady=5)
+                entrada.grid(row=i + 2, column=j + 2, padx=5, pady=5)
                 fila.append(entrada)
             entradas_matriz.append(fila)
             

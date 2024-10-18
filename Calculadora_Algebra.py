@@ -1,8 +1,6 @@
-#import Pantalla_principal as PP
 import tkinter as tk
 from tkinter import messagebox
 import numpy as np
-import sys
 from fractions import Fraction
 import matplotlib.pyplot as plt
 
@@ -13,6 +11,7 @@ frame_matriz = None
 frame_matriz_M2 = None
 boton_calcular = None
 boton_calcular_cramer = None
+boton_graficar = None
 
 #Menu principal
 def menu_principal():
@@ -255,7 +254,7 @@ def menu_principal():
             def regresar():
                 clean_buttons_sub2_ga()
                 resultado_label.config(text="")
-                sis_ecu_sub()    
+                sis_ecu_sub()
             
             #limpia los botones dentro del submenu al regresar al menu anterior
             def clean_buttons_sub2_ga():
@@ -269,9 +268,12 @@ def menu_principal():
                     
                 if boton_calcular is not None:
                     boton_calcular.destroy()
-            
+                    
+                if boton_graficar is not None:
+                    boton_graficar.destroy()
+                    
             def generar_matriz(filas, columnas):
-                global frame_matriz, boton_calcular
+                global frame_matriz, boton_calcular, boton_graficar
                 frame_matriz = tk.Frame(CA_Win)
                 frame_matriz.grid(row=4, column=1, columnspan=columnas)
                 
@@ -353,7 +355,6 @@ def menu_principal():
             def cuadruple():
                 clean_buttons_sub2_ga()
                 generar_matriz(4, 5)
-                
             
             instruccionSize = tk.Label(CA_Win, text="Seleccione el tamaño del sistema de ecuaciones")
             instruccionSize.grid(row=0, column=2, columnspan=4, padx=10, pady=10)

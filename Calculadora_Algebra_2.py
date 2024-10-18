@@ -17,6 +17,8 @@ frame_calc_cramer = tk.Frame(Frame2)
 
 boton_calcular = None
 boton_graficar = None
+boton_calcular_cramer = None
+boton_graficar_cramer = None
 resultado_label = None
 entradas_matriz = []
 
@@ -95,6 +97,7 @@ def Calculadora_cramer():
     boton_inversa.grid_forget()
     boton_Multi.grid_forget()
     boton_sis_ecuaciones.grid_forget()
+    sis_ecu_cramer()
 
 def sis_ecu_Gaus():
     global boton_calcular, boton_graficar, entradas_matriz, resultado_label
@@ -113,7 +116,6 @@ def sis_ecu_Gaus():
         if boton_graficar is not None:
             boton_graficar.destroy() 
         plt.close('all')
-        print("Cierrate la cola")
 
     def generar_matriz(filas, columnas):
         global boton_calcular, boton_graficar, entradas_matriz
@@ -210,6 +212,125 @@ def sis_ecu_Gaus():
     resultado_label = tk.Label(frame_calc_gauss, text="")
     resultado_label.grid(row=7, column=1, columnspan=3, padx=10, pady=10)
     
+def sis_ecu_cramer():
+    global boton_calcular_cramer, boton_graficar, entradas_matriz, resultado_label
+    
+    def limpiar_matriz_cra():
+        # Eliminar todas las entradas anteriores
+        for fila in entradas_matriz:
+            for entrada in fila:
+                entrada.destroy()
+        entradas_matriz.clear()
+
+    def limpiar_resultado_y_boton_cra():
+        # Limpiar el resultado anterior
+        resultado_label.config(text="")
+        # Si hay un botón de graficar, lo eliminamos
+        if boton_graficar is not None:
+            boton_graficar.destroy()
+        plt.close('all')
+        
+    def generar_matriz_cra(filas, columnas):
+        global boton_calcular_cramer, boton_graficar, entradas_matriz
+        limpiar_matriz_cra()  # Limpiar cualquier matriz previa
+        limpiar_resultado_y_boton_cra()  # Limpiar el resultado y botón previo
+
+        entradas_matriz = []
+        for i in range(filas):
+            fila = []
+            for j in range(columnas):
+                entrada = tk.Entry(frame_calc_cramer, width=5)
+                entrada.grid(row=i +2, column=j + 2, padx=5, pady=5)
+                fila.append(entrada)
+            entradas_matriz.append(fila)
+            
+        if boton_calcular_cramer is not None:
+            boton_calcular_cramer.destroy()
+            
+        boton_calcular_cramer = tk.Button(frame_calc_cramer, text="Calcular", command=lambda: calcular_solucion(entradas_matriz))
+        boton_calcular_cramer.grid(row=6 + filas, column=1, columnspan=2, padx=5, pady=5)
+           
+    def calcular_solucion(entradas):
+        limpiar_resultado_y_boton_cra()
+        try:
+            matriz = np.array([[float(entradas[i][j].get()) for j in range(len(entradas[0]))] for i in range(len(entradas))])
+            filas, columnas = matriz.shape
+            
+            if filas != columnas - 1:
+                messagebox.showerror("Error", "La matriz no tiene un formato válido.")
+                return
+            
+            A = matriz[:, :-1]
+            b = matriz[:, -1]
+            
+            det_A = np.linalg.det(A)
+            if det_A == 0:
+                messagebox.showerror("Error", "El sistema no tiene solución única.")
+                return
+            
+            soluciones = []
+            for i in range(len(b)):
+                Ai = np.copy(A)
+                Ai[:, i] = b
+                det_Ai = np.linalg.det(Ai)
+                solucion = det_Ai / det_A
+                soluciones.append(Fraction(solucion).limit_denominator())
+                
+            soluciones_str = ', '.join([str(sol) for sol in soluciones])
+            resultado_label.config(text=f"Solución:\n{soluciones_str}")
+            
+            global boton_graficar_cramer
+            boton_graficar_cramer = tk.Button(frame_calc_gauss, text="Mostrar Gráfica", command=lambda: mostrar_grafica(soluciones_str))
+            boton_graficar_cramer.grid(row=8, column=1, columnspan=2, padx=5, pady=5)
+            
+        except Exception as e:
+            messagebox.showerror("Error", f"Error al calcular la solución: {str(e)}")
+            
+    def mostrar_grafica(soluciones_str):
+        if len(soluciones_str) == 2:
+            x_vals = np.linspace(-10, 10, 100)
+            y_vals = soluciones_str[0] * x_vals + soluciones_str[1]
+            
+            plt.plot(x_vals, y_vals, label='Solución del sistema')
+            plt.xlabel('X')
+            plt.ylabel('Y')
+            plt.title('Gráfica del sistema 2x2')
+            plt.legend()
+            plt.grid(True)
+            plt.show()
+        elif len(soluciones_str) == 3:
+            
+            fig = plt.figure()
+            ax = fig.add_subplot(111, projection='3d')
+            
+            x_vals = np.linspace(-10, 10, 100)
+            y_vals = np.linspace(-10, 10, 100)
+            X, Y = np.meshgrid(x_vals, y_vals)
+            Z = soluciones_str[0] * X + soluciones_str[1] * Y + soluciones_str[2]
+            
+            ax.plot_surface(X, Y, Z, cmap='viridis')
+            ax.set_xlabel('X')
+            ax.set_ylabel('Y')
+            ax.set_zlabel('Z')
+            plt.title('Gráfica del sistema 3x3')
+            plt.show()
+
+    instruccionSize = tk.Label(frame_calc_cramer, text="Seleccione el tamaño del sistema de ecuaciones")
+    instruccionSize.grid(row=0, column=2, columnspan=4, padx=10, pady=10)
+        
+    boton_2x2 = tk.Button(frame_calc_cramer, text="2x2", command=lambda: generar_matriz_cra(2, 3))
+    boton_2x2.grid(row=1, column=2, padx=10, pady=10)
+    boton_3x3 = tk.Button(frame_calc_cramer, text="3x3", command=lambda: generar_matriz_cra(3, 4))
+    boton_3x3.grid(row=1, column=3, padx=10, pady=10)
+    boton_4x4 = tk.Button(frame_calc_cramer, text="4x4", command=lambda: generar_matriz_cra(4, 5))
+    boton_4x4.grid(row=1, column=4, padx=10, pady=10)
+    
+    boton_regresar_cramer = tk.Button(frame_calc_cramer, text=("regresar"), command=pantalla_Sis_ecuaciones)
+    boton_regresar_cramer.grid(row=0, column=0, padx=5, pady=5)
+    
+    resultado_label = tk.Label(frame_calc_cramer, text="")
+    resultado_label.grid(row=7, column=1, columnspan=3, padx=10, pady=10)
+    
 # Definición de botones en la pantalla principal
 boton_inversa = tk.Button(Frame2, text="Matriz Inversa",font=("Times New Roman", 10),command=pantalla_Minversa, width=30, height=3)
 boton_inversa.grid(row=2, column=1, padx=10, pady=10)
@@ -217,7 +338,7 @@ boton_inversa.grid(row=2, column=1, padx=10, pady=10)
 boton_Multi = tk.Button(Frame2, text="Multiplicacion de matrices",font=("Times New Roman", 10),command=pantalla_Multiplicacion, width=30, height=3)
 boton_Multi.grid(row=3, column=1, padx=10, pady=10)
 
-boton_sis_ecuaciones = tk.Button(Frame2, text="Sistema De Ecuaciones,",font=("Times New Roman", 10),command=pantalla_Sis_ecuaciones,width=30, height=3)
+boton_sis_ecuaciones = tk.Button(Frame2, text="Sistema De Ecuaciones",font=("Times New Roman", 10),command=pantalla_Sis_ecuaciones,width=30, height=3)
 boton_sis_ecuaciones.grid(row=4, column=1, padx=10, pady=10)
 
 boton_calc_gauss = tk.Button(frame_pantalla_sis_ecuaciones, text="Metodo de Gauss Jordan",font=("Times New Roman", 10), command=Calculadora_gauss,width=30, height=3)
@@ -226,5 +347,7 @@ boton_calc_gauss.grid(row=2, column=1, padx=10, pady=10)
 boton_calc_cramer = tk.Button(frame_pantalla_sis_ecuaciones,text="Metodo de Cramer",font=("Times New Roman", 10),command=Calculadora_cramer,width=30, height=3)
 boton_calc_cramer.grid(row=3, column=1, padx=10, pady=10)
 
+#👍︎♒︎❒︎♓︎⬧︎ ●︎□︎ ♋︎♍︎♏︎◻︎⧫︎□︎ ⬧︎□︎⍓︎ ◆︎■︎ ⧫︎❒︎♏︎❍︎♏︎■︎♎︎□︎ ♓︎♎︎♓︎□︎⧫︎♋︎ ◻︎□︎❒︎ ■︎□︎ ♒︎♋︎♌︎♏︎❒︎ ◆︎⬧︎♋︎♎︎□︎ ☝︎🏱︎❄︎ ♍︎□︎❍︎□︎ ❒︎♏︎⬧︎◻︎♋︎●︎♎︎□︎ ◻︎♋︎❒︎♋︎ ❍︎♓︎ ❍︎♋︎♐︎◆︎♐︎♋︎♎︎♋︎ ⍓︎ ■︎□︎ ◻︎□︎■︎♏︎❒︎❍︎♏︎ ♋︎ ❖︎♏︎❒︎ ♏︎🙰♏︎❍︎◻︎●︎□︎⬧︎ ◻︎♋︎❒︎♋︎ ♒︎♋︎♍︎♏︎❒︎●︎□︎ ♎︎♏︎ ♐︎□︎❒︎❍︎♋︎ ❍︎♋︎⬧︎ ♏︎♐︎♓︎♍︎♓︎♏︎■︎⧫︎♏︎ ◻︎♏︎❒︎□︎ ■︎□︎ ⬧︎♏︎ ◻︎◆︎♏︎♎︎♏︎ ♎︎♏︎♍︎♓︎❒︎ ❑︎◆︎♏︎ ■︎□︎ ⧫︎❒︎♋︎♌︎♋︎🙰♏︎ ⧫︎♋︎❍︎◻︎□︎♍︎□︎ ◻︎□︎❒︎❑︎◆︎♏︎ ♋︎ ◻︎♏︎⬧︎♋︎❒︎ ♎︎♏︎ ⧫︎□︎♎︎□︎ ⬧︎♋︎❑︎◆︎♏︎ ♋︎♎︎♏︎●︎♋︎■︎⧫︎♏︎ ●︎♋︎⬧︎ ♍︎□︎⬧︎♋︎⬧︎ ♋︎ ♍︎□︎❍︎□︎ ◻︎□︎♎︎í♋︎📪︎ ♑︎❒︎♋︎♍︎♓︎♋︎⬧︎ ◻︎□︎❒︎ ⧫︎□︎♎︎♋︎ ●︎♋︎ ♋︎⍓︎◆︎♎︎♋︎ ♏︎■︎⬧︎♏︎❒︎♓︎□︎ ◻︎♋︎❒︎♋︎ ♋︎❒︎❒︎♏︎♑︎●︎♋︎❒︎ ♏︎⬧︎⧫︎♋︎ ♍︎□︎⬧︎♋︎ ⍓︎ ❖︎♏︎⌘︎ ♍︎□︎❍︎□︎ ♒︎♋︎♍︎♏︎❒︎ ❍︎□︎♎︎⬧︎ ⍓︎ ♏︎⬧︎♍︎❒︎♓︎♌︎♓︎❒︎ ♍︎ó♎︎♓︎♑︎□︎ ♎︎♏︎⬧︎♎︎♏︎ 📁︎ ■︎□︎ ♏︎⬧︎ ♓︎♑︎◆︎♋︎●︎ 🙰♋︎🙰♋︎🙰♋︎ ♎︎♏︎ ❖︎♏︎❒︎♎︎♋︎♎︎ ❍︎◆︎♍︎♒︎♋︎⬧︎ ♑︎❒︎♋︎♍︎♓︎♋︎⬧︎ ♋︎◆︎■︎❑︎◆︎♏︎ ❍︎♏︎ ❑︎◆︎♏︎🙰♏︎ ❍︎◆︎♍︎♒︎□︎ ♋︎♍︎♏︎◻︎⧫︎□︎ ❑︎◆︎♏︎ ⬧︎□︎⬧︎ ◆︎■︎ ♌︎◆︎♏︎■︎ ●︎í♎︎♏︎❒︎ ⍓︎ ♎︎♏︎ ❖︎♏︎❒︎♎︎♋︎♎︎ ⧫︎♏︎ ♋︎◻︎❒︎♏︎♍︎♓︎□︎ ◆︎■︎ ♍︎♒︎♓︎■︎♑︎□︎ ♍︎□︎❍︎□︎ ♋︎❍︎♓︎♑︎□︎ ♎︎♏︎ ■︎◆︎♏︎❖︎□︎ ♑︎❒︎♋︎♍︎♓︎♋︎⬧︎📬︎
+#Cangrejo en el codigo? Donde esta pipipi
 pantalla_principal
 Frame2.mainloop()

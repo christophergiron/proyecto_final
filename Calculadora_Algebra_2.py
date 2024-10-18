@@ -83,6 +83,19 @@ def Calculadora_gauss():
     boton_Multi.grid_forget() 
     boton_sis_ecuaciones.grid_forget()
     sis_ecu_Gaus()
+    
+def Calculadora_cramer():
+    global boton_calcular, entradas_matriz
+    frame_calc_cramer.grid()
+    frame_pantalla_sis_ecuaciones.grid_forget()
+    frame_Pantalla_Minversa.grid_forget()
+    frame_pantalla_Multiplicacion.grid_forget()
+    Pan_principal.grid_forget()
+    frame_calc_gauss.grid_forget()
+
+    boton_inversa.grid_forget()
+    boton_Multi.grid_forget()
+    boton_sis_ecuaciones.grid_forget()
 
 def sis_ecu_Gaus():
     global boton_calcular, boton_graficar, entradas_matriz, resultado_label

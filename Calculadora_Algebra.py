@@ -37,6 +37,7 @@ def menu_principal():
         instruccionInv = tk.Label(CA_Win, text="Ingrese el tamaño de la matriz: ")
         instruccionInv.grid(row=0, column=5, columnspan=2, padx=10, pady=10)
 
+        # Entrada para el tamaño de la matriz
         fila_la1 = tk.Label(CA_Win, text="Filas: ")
         fila_la1.grid(row=1, column=0)
         fila_e1 = tk.Entry(CA_Win, width=5)
@@ -47,6 +48,7 @@ def menu_principal():
         columna_e2 = tk.Entry(CA_Win, width=5)
         columna_e2.grid(row=2, column=1)
 
+        # Función para generar la matriz con los tamaños dados por el usuario
         def generar_matriz():
             global frame_matriz, boton_calcular
 
@@ -57,9 +59,11 @@ def menu_principal():
                 if boton_calcular is not None:
                     boton_calcular.destroy()
             try:
+                # Captura las dimensiones de la matriz
                 filas = int(fila_e1.get())
                 columnas = int(columna_e2.get())
 
+                # Verifica si el tamaño es válido (mayor que 1)
                 if filas <= 1 | columnas <= 1:
                     messagebox.showerror("Error", "El tamaño debe ser mayor a 1.")
                 else:
@@ -67,7 +71,8 @@ def menu_principal():
                     frame_matriz = tk.Frame(CA_Win)
                     frame_matriz.grid(row=4, column=0, columnspan=columnas)
 
-                    entradas_matriz = []
+                    entradas_matriz = [] # Lista para almacenar las entradas de la matriz
+                    # Genera las entradas para la matriz
                     for i in range(filas):
                         fila = []
                         for j in range(columnas):
@@ -76,12 +81,15 @@ def menu_principal():
                             fila.append(entrada)
                         entradas_matriz.append(fila)
 
+                    # Función para calcular la inversa de la matriz ingresada
                     def calcular_inversa():
                         try:
+                            # Convierte los datos en una matriz
                             matriz = np.array([[float(entradas_matriz[i][j].get()) for j in range(columnas)] for i in range(filas)])
                             if filas != columnas:
                                 resultado_inversa.config(text="La matriz no es cuadrada, no tiene inversa.")
                             else:
+                                # Calcula la inversa de la matriz
                                 matriz_inversa = np.linalg.inv(matriz)
                                 resultado_inversa.config(text=f"Inversa de la matriz:\n{matriz_inversa}")
                             
@@ -90,19 +98,22 @@ def menu_principal():
                         except Exception as e:
                             messagebox.showerror("Error", f"Error: {str(e)}")
 
+                    # Botón para calcular la inversa
                     boton_calcular = tk.Button(CA_Win, text="Calcular Inversa", command=calcular_inversa)
                     boton_calcular.grid(row=4 + filas, column=0, columnspan=2, padx=10, pady=10)
 
             except ValueError as e:
                 messagebox.showerror("Error", f"Error: {str(e)}")
 
+        # Botón para generar la matriz
         boton_generar = tk.Button(CA_Win, text="Generar Matriz", command=generar_matriz)
         boton_generar.grid(row=3, column=0, columnspan=2, padx=10, pady=10)
 
+        # Etiqueta para mostrar el resultado de la inversa
         resultado_inversa = tk.Label(CA_Win, text="")
         resultado_inversa.grid(row=4 + 10, column=0, columnspan=4, padx=10, pady=10)
 
-        backButton()
+        backButton() # Invoca la funcion del boton atras
 
     #Comienzo del codigo de la multiplicacion
     def multi():
@@ -151,12 +162,14 @@ def menu_principal():
                 if boton_calcular is not None:
                     boton_calcular.destroy()
             try:
+                # Captura los tamaños de ambas matrices
                 filas = int(fila_e1.get())
                 columnas = int(columna_e1.get())
                 
                 filas_M2 = int(fila_e2.get())
                 columnas_M2 = int(columna_e2.get())
 
+                # Verifica si los tamaños son válidos
                 if filas <= 1 or columnas <= 1 or filas_M2 <= 1 or columnas_M2 <= 1:
                     messagebox.showerror("Error", "El tamaño debe ser mayor a 1.")
                 else:
@@ -167,6 +180,7 @@ def menu_principal():
                         frame_matriz = tk.Frame(CA_Win)
                         frame_matriz.grid(row=4, column=0, columnspan=columnas)
                         
+                        # Crear un nuevo frame para la segunda matriz
                         frame_matriz_M2 = tk.Frame(CA_Win)
                         frame_matriz_M2.grid(row=4, column=columnas+1, columnspan=columnas_M2)
 
@@ -187,21 +201,25 @@ def menu_principal():
                                 entrada_2.grid(row=i, column=j, padx=5, pady=5)
                                 fila_2.append(entrada_2)
                             entradas_matriz_2.append(fila_2)
-                    
+                            
+                        # Función para calcular la multiplicación de matrices
                         def calculoEnSi():
                             try:
                                 # Obtener los valores de las matrices ingresadas
                                 matriz = np.array([[float(entradas_matriz[i][j].get()) for j in range(columnas)] for i in range(filas)])
                                 matriz_M2 = np.array([[float(entradas_matriz_2[i][j].get()) for j in range(columnas_M2)] for i in range(filas_M2)])
+                                
                                 # Realizar la multiplicación de matrices (producto matricial)
                                 resultado = np.dot(matriz, matriz_M2)
+                                
                                 # Mostrar el resultado en una nueva ventana o actualizar algún widget para mostrarlo
                                 resultado_multi.config(text=f"Resultado:\n{resultado}")
                             except ValueError as e:
                                 messagebox.showerror("Error", f"Error: {str(e)}")
                             except Exception as e:
                                 messagebox.showerror("Error", f"Error inesperado: {str(e)}")
-                
+
+                    # Crear botón para calcular el producto de matrices
                     boton_calcular = tk.Button(CA_Win, text="Multiplicar", command=calculoEnSi)
                     boton_calcular.grid(row=6 + filas, column=1, columnspan=2, padx=10, pady=10)
                 
@@ -443,7 +461,7 @@ def menu_principal():
                 except Exception as e:
                     messagebox.showerror("Error", f"Error al calcular la solución: {str(e)}")
 
-#Menu del sistema de ecuaciones
+        #Menu del sistema de ecuaciones
         instruccionMetodo = tk.Label(CA_Win, text="Seleccione el metodo a utilizar")
         instruccionMetodo.grid(row=0, column=5, columnspan=5, padx=10, pady=10)
         
@@ -465,7 +483,8 @@ def menu_principal():
         for menu2 in CA_Win.winfo_children():
             menu2.destroy()
         sis_ecu_sub()
-        
+
+    # Funciones para cada opción del menú principal
     instruccion = tk.Label(CA_Win, text="Seleccione la operacion a realizar: ")
     instruccion.grid(row=0, column=0, columnspan=2, padx=10, pady=10)
 

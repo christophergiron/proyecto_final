@@ -72,7 +72,7 @@ def operaciones_matematica_discreta(frame, volver_inicio,):
         except ValueError: #muestra error si no se introduce un numero y se introduce una letra o si no se introduce nada
             messagebox.showerror("", "El valor introducido no es valido, Introduce Por favor un Numero")
             return
-    operacionselec = tk.Label(panta_princi, font=("Times New Roman", 14), text="Seleccione su Calculadora" ,fg="#ffc54a", bg="#00183e") #solo funciona para bajar un poco los botones
+    operacionselec = tk.Label(panta_princi, font=("Times New Roman", 10), text="Seleccione su Operación" ,fg="#ffc54a", bg="#00183e") #solo funciona para bajar un poco los botones
     operacionselec.grid(row=0, column=3, padx=302, pady=30)   
     
     #Botones para enselar las pantallas de permutacion y de combinacion, haciendo que se intercambien entre las 3, que son la principal y las otras 2

@@ -103,3 +103,4 @@ Descripción: Cambia entre las diferentes pantallas (Permutación, Combinación,
 Parámetros:
 panta (tk.Frame): Frame que se va a mostrar.
 Retorno: Ninguno - solo actualiza la interfaz gráfica.
+

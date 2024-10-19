@@ -124,7 +124,7 @@ tree.column("Rol", width=300)
 
 # Insertar datos en el Treeview
 tree.insert("", "end", values=("Christopher Ricardo Garcia Giron", "0907-24-10087", "Líder de proyecto, Encargado de la intefaz principal"))
-tree.insert("", "end", values=("Miguel José Alfaro Vásquez","0907-24-12948", "Encargado calculadora Matematica discreta"))
+tree.insert("", "end", values=("Miguel José Alfaro Vásquez","0907-24-12948", "Encargado calculadora Matematica discreta,Decorador"))
 tree.insert("", "end", values=("José Miguel Castillo Pérez","0907-24-1862", "Encargado calculadora algebra lineal"))
 tree.insert("", "end", values=("Diego Alejandro Fernández González","0907-24-25569", "Encargado calculadora algebra lineal"))
 tree.pack(padx=10, pady=50)  # Usamos pack en lugar de grid para este caso

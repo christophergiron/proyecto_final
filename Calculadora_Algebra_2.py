@@ -7,13 +7,14 @@ import matplotlib.pyplot as plt
 Frame2 = tk.Tk()
 Frame2.title("Calculadora de matrices")
 Frame2.geometry("800x500")
+Frame2.config(bg="#00183e")
 
-Pan_principal = tk.Frame(Frame2)
-frame_Pantalla_Minversa = tk.Frame(Frame2)
-frame_pantalla_Multiplicacion = tk.Frame(Frame2)
-frame_pantalla_sis_ecuaciones = tk.Frame(Frame2)
-frame_calc_gauss = tk.Frame(Frame2)
-frame_calc_cramer = tk.Frame(Frame2)
+Pan_principal = tk.Frame(Frame2, bg="#00183e")
+frame_Pantalla_Minversa = tk.Frame(Frame2, bg="#00183e")
+frame_pantalla_Multiplicacion = tk.Frame(Frame2, bg="#00183e")
+frame_pantalla_sis_ecuaciones = tk.Frame(Frame2, bg="#00183e")
+frame_calc_gauss = tk.Frame(Frame2, bg="#00183e")
+frame_calc_cramer = tk.Frame(Frame2, bg="#00183e")
 
 boton_calcular = None
 boton_graficar = None
@@ -107,28 +108,27 @@ def Calculadora_cramer():
     sis_ecu_cramer()
 def Calculadora_inversa():
     # Etiqueta de instrucciones
-    instruccion_inversa = tk.Label(frame_Pantalla_Minversa, text="Ingrese las dimensiones de su matriz")
+    instruccion_inversa = tk.Label(frame_Pantalla_Minversa,  bg="#ffc54a",text="Ingrese las dimensiones de su matriz")
     instruccion_inversa.grid(row=0, column=1, columnspan=2, padx=10, pady=10)
 
     # Etiquetas y entradas para filas
-    filas_label = tk.Label(frame_Pantalla_Minversa, text="Filas:")
+    filas_label = tk.Label(frame_Pantalla_Minversa,  bg="#ffc54a",text="Filas:")
     filas_label.grid(row=1, column=0, padx=10, pady=5)
-    filas_entry = tk.Entry(frame_Pantalla_Minversa, width=3)  # Ajustar tamaño
+    filas_entry = tk.Entry(frame_Pantalla_Minversa, bg="#79d7fd", width=3)  # Ajustar tamaño
     filas_entry.grid(row=1, column=1, padx=10, pady=5)
 
     # Etiquetas y entradas para columnas
-    columnas_label = tk.Label(frame_Pantalla_Minversa, text="Columnas:")
+    columnas_label = tk.Label(frame_Pantalla_Minversa,  bg="#ffc54a",text="Columnas:")
     columnas_label.grid(row=2, column=0, padx=10, pady=5)
-    columnas_entry = tk.Entry(frame_Pantalla_Minversa, width=3)  # Ajustar tamaño
+    columnas_entry = tk.Entry(frame_Pantalla_Minversa, bg="#79d7fd", width=3)  # Ajustar tamaño
     columnas_entry.grid(row=2, column=1, padx=10, pady=5)
 
     # Botón para generar la matriz
-    boton_generar_matriz = tk.Button(frame_Pantalla_Minversa, text="Generar Matriz",
-                                      command=lambda: generar_matriz(filas_entry.get(), columnas_entry.get(), boton_regresar, boton_generar_matriz, instruccion_inversa, filas_label, filas_entry, columnas_label, columnas_entry))
+    boton_generar_matriz = tk.Button(frame_Pantalla_Minversa, text="Generar Matriz", activebackground="#0085fa", bg="#00bbfa", command=lambda: generar_matriz(filas_entry.get(), columnas_entry.get(), boton_regresar, boton_generar_matriz, instruccion_inversa, filas_label, filas_entry, columnas_label, columnas_entry))
     boton_generar_matriz.grid(row=3, column=0, columnspan=2, padx=10, pady=10)
 
     # Botón de regresar a la pantalla principal
-    boton_regresar = tk.Button(frame_Pantalla_Minversa, text="Regresar", command=pantalla_principal)
+    boton_regresar = tk.Button(frame_Pantalla_Minversa, text="Regresar", activebackground="#a93a48",bg="#c93a48", command=pantalla_principal)
     boton_regresar.grid(row=0, column=0, padx=10, pady=10)
 
 def generar_matriz(filas, columnas, boton_regresar, boton_generar_matriz, instruccion_inversa, filas_label, filas_entry, columnas_label, columnas_entry):
@@ -149,15 +149,14 @@ def generar_matriz(filas, columnas, boton_regresar, boton_generar_matriz, instru
     for i in range(filas):
         row_entries = []
         for j in range(columnas):
-            entry = tk.Entry(frame_Pantalla_Minversa, width=5)
+            entry = tk.Entry(frame_Pantalla_Minversa, width=5, bg="#79d7fd")
             entry.grid(row=i + 3, column=j + 3, padx=5, pady=5)
             row_entries.append(entry)
         matriz_entries.append(row_entries)
 
     # Comprobar si la matriz es cuadrada para habilitar el cálculo de la inversa
     if filas == columnas:
-        boton_calcular_inversa = tk.Button(frame_Pantalla_Minversa, text="Calcular Matriz Inversa",
-                                           command=lambda: calcular_inversa(filas, matriz_entries))
+        boton_calcular_inversa = tk.Button(frame_Pantalla_Minversa, text="Calcular Matriz Inversa", command=lambda: calcular_inversa(filas, matriz_entries), activebackground="#0085fa",bg="#00bbfa")
         boton_calcular_inversa.grid(row=filas + 4, column=0, columnspan=columnas, padx=10, pady=10)
     else:
         messagebox.showwarning("Advertencia", "La matriz debe ser cuadrada para calcular la inversa.")
@@ -184,12 +183,12 @@ def calcular_inversa(tamano, matriz_entries):
 
 def mostrar_resultado(matriz_inversa, tamano):
     # Mostramos los resultados justo debajo de la matriz ingresada
-    tk.Label(frame_Pantalla_Minversa, text="Matriz Inversa:").grid(row=tamano + 5, column=0, columnspan=tamano, padx=10, pady=10)
+    tk.Label(frame_Pantalla_Minversa, text="Matriz Inversa:", bg="#ffc54a").grid(row=tamano + 5, column=0, columnspan=tamano, padx=10, pady=10)
 
     # Mostramos los valores de la matriz inversa debajo de la matriz original
     for i in range(matriz_inversa.shape[0]):
         for j in range(matriz_inversa.shape[1]):
-            tk.Label(frame_Pantalla_Minversa, text=f"{matriz_inversa[i, j]:.2f}").grid(row=i + tamano + 6, column=j, padx=5, pady=5)
+            tk.Label(frame_Pantalla_Minversa, bg="#ffc54a",text=f"{matriz_inversa[i, j]:.2f}").grid(row=i + tamano + 6, column=j, padx=5, pady=5,)
 
 
 def sis_ecu_Gaus():
@@ -219,7 +218,7 @@ def sis_ecu_Gaus():
         for i in range(filas):
             fila = []
             for j in range(columnas):
-                entrada = tk.Entry(frame_calc_gauss, width=5)
+                entrada = tk.Entry(frame_calc_gauss, width=5, bg="#79d7fd")
                 entrada.grid(row=i + 2, column=j + 2, padx=5, pady=5)
                 fila.append(entrada)
             entradas_matriz.append(fila)
@@ -227,7 +226,7 @@ def sis_ecu_Gaus():
         if boton_calcular is not None:
             boton_calcular.destroy()
 
-        boton_calcular = tk.Button(frame_calc_gauss, text="Calcular", command=lambda: calcular_solucion(entradas_matriz))
+        boton_calcular = tk.Button(frame_calc_gauss, text="Calcular", activebackground="#0085fa",bg="#00bbfa", command=lambda: calcular_solucion(entradas_matriz))
         boton_calcular.grid(row=6 + filas, column=1, columnspan=2, padx=5, pady=5)
 
     def calcular_solucion(entradas):
@@ -289,20 +288,20 @@ def sis_ecu_Gaus():
             plt.show()
 
     # Botones para seleccionar el tamaño de la matriz
-    instruccionSize = tk.Label(frame_calc_gauss, text="Seleccione el tamaño del sistema de ecuaciones")
+    instruccionSize = tk.Label(frame_calc_gauss, bg="#ffc54a", text="Seleccione el tamaño del sistema de ecuaciones")
     instruccionSize.grid(row=0, column=2, columnspan=4, padx=10, pady=10)
         
-    boton_2x2 = tk.Button(frame_calc_gauss, text="2x2", command=lambda: generar_matriz(2, 3))
+    boton_2x2 = tk.Button(frame_calc_gauss, text="2x2", activebackground="#0085fa", bg="#00bbfa", command=lambda: generar_matriz(2, 3))
     boton_2x2.grid(row=1, column=2, padx=10, pady=10)
-    boton_3x3 = tk.Button(frame_calc_gauss, text="3x3", command=lambda: generar_matriz(3, 4))
+    boton_3x3 = tk.Button(frame_calc_gauss, text="3x3", activebackground="#0085fa", bg="#00bbfa", command=lambda: generar_matriz(3, 4))
     boton_3x3.grid(row=1, column=3, padx=10, pady=10)
-    boton_4x4 = tk.Button(frame_calc_gauss, text="4x4", command=lambda: generar_matriz(4, 5))
+    boton_4x4 = tk.Button(frame_calc_gauss, text="4x4", activebackground="#0085fa", bg="#00bbfa", command=lambda: generar_matriz(4, 5))
     boton_4x4.grid(row=1, column=4, padx=10, pady=10)
     
-    boton_regresar_gaus = tk.Button(frame_calc_gauss, text=("regresar"), command=pantalla_Sis_ecuaciones)
+    boton_regresar_gaus = tk.Button(frame_calc_gauss, text=("regresar"), activebackground="#a93a48",bg="#c93a48", command=pantalla_Sis_ecuaciones)
     boton_regresar_gaus.grid(row=0, column=0, padx=5, pady=5)
     
-    resultado_label = tk.Label(frame_calc_gauss, text="")
+    resultado_label = tk.Label(frame_calc_gauss, bg="#ffc54a", text="")
     resultado_label.grid(row=7, column=1, columnspan=3, padx=10, pady=10)
     
 def sis_ecu_cramer():
@@ -332,7 +331,7 @@ def sis_ecu_cramer():
         for i in range(filas):
             fila = []
             for j in range(columnas):
-                entrada = tk.Entry(frame_calc_cramer, width=5)
+                entrada = tk.Entry(frame_calc_cramer, width=5, bg="#79d7fd")
                 entrada.grid(row=i +2, column=j + 2, padx=5, pady=5)
                 fila.append(entrada)
             entradas_matriz.append(fila)
@@ -340,7 +339,7 @@ def sis_ecu_cramer():
         if boton_calcular_cramer is not None:
             boton_calcular_cramer.destroy()
             
-        boton_calcular_cramer = tk.Button(frame_calc_cramer, text="Calcular", command=lambda: calcular_solucion(entradas_matriz))
+        boton_calcular_cramer = tk.Button(frame_calc_cramer, text="Calcular", activebackground="#0085fa",bg="#00bbfa", command=lambda: calcular_solucion(entradas_matriz))
         boton_calcular_cramer.grid(row=6 + filas, column=1, columnspan=2, padx=5, pady=5)
            
     def calcular_solucion(entradas):
@@ -408,36 +407,42 @@ def sis_ecu_cramer():
             plt.title('Gráfica del sistema 3x3')
             plt.show()
 
-    instruccionSize = tk.Label(frame_calc_cramer, text="Seleccione el tamaño del sistema de ecuaciones")
+    instruccionSize = tk.Label(frame_calc_cramer, bg="#ffc54a", text="Seleccione el tamaño del sistema de ecuaciones")
     instruccionSize.grid(row=0, column=2, columnspan=4, padx=10, pady=10)
         
-    boton_2x2 = tk.Button(frame_calc_cramer, text="2x2", command=lambda: generar_matriz_cra(2, 3))
+    boton_2x2 = tk.Button(frame_calc_cramer, activebackground="#0085fa", bg="#00bbfa", text="2x2", command=lambda: generar_matriz_cra(2, 3))
     boton_2x2.grid(row=1, column=2, padx=10, pady=10)
-    boton_3x3 = tk.Button(frame_calc_cramer, text="3x3", command=lambda: generar_matriz_cra(3, 4))
+    boton_3x3 = tk.Button(frame_calc_cramer, text="3x3", activebackground="#0085fa", bg="#00bbfa",  command=lambda: generar_matriz_cra(3, 4))
     boton_3x3.grid(row=1, column=3, padx=10, pady=10)
-    boton_4x4 = tk.Button(frame_calc_cramer, text="4x4", command=lambda: generar_matriz_cra(4, 5))
+    boton_4x4 = tk.Button(frame_calc_cramer, text="4x4", activebackground="#0085fa", bg="#00bbfa", command=lambda: generar_matriz_cra(4, 5))
     boton_4x4.grid(row=1, column=4, padx=10, pady=10)
     
-    boton_regresar_cramer = tk.Button(frame_calc_cramer, text=("regresar"), command=pantalla_Sis_ecuaciones)
+    boton_regresar_cramer = tk.Button(frame_calc_cramer, text=("regresar"), activebackground="#a93a48",bg="#c93a48",command=pantalla_Sis_ecuaciones)
     boton_regresar_cramer.grid(row=0, column=0, padx=5, pady=5)
     
-    resultado_label = tk.Label(frame_calc_cramer, text="")
+    resultado_label = tk.Label(frame_calc_cramer, bg="#ffc54a", text="")
     resultado_label.grid(row=7, column=1, columnspan=3, padx=10, pady=10)
     
 # Definición de botones en la pantalla principal
-boton_inversa = tk.Button(Frame2, text="Matriz Inversa",font=("Times New Roman", 10),command=pantalla_Minversa, width=30, height=3)
+
+
+    
+boton_inversa = tk.Button(Frame2, activebackground="#0085fa", bg="#00bbfa",text="Matriz Inversa",font=("Times New Roman", 10),command=pantalla_Minversa, width=30, height=3)
 boton_inversa.grid(row=2, column=1, padx=10, pady=10)
     
-boton_Multi = tk.Button(Frame2, text="Multiplicacion de matrices",font=("Times New Roman", 10),command=pantalla_Multiplicacion, width=30, height=3)
+boton_Multi = tk.Button(Frame2, activebackground="#0085fa", bg="#00bbfa",text="Multiplicacion de matrices",font=("Times New Roman", 10),command=pantalla_Multiplicacion, width=30, height=3)
 boton_Multi.grid(row=3, column=1, padx=10, pady=10)
 
-boton_sis_ecuaciones = tk.Button(Frame2, text="Sistema De Ecuaciones",font=("Times New Roman", 10),command=pantalla_Sis_ecuaciones,width=30, height=3)
+boton_sis_ecuaciones = tk.Button(Frame2, activebackground="#0085fa", bg="#00bbfa",text="Sistema De Ecuaciones",font=("Times New Roman", 10),command=pantalla_Sis_ecuaciones,width=30, height=3)
 boton_sis_ecuaciones.grid(row=4, column=1, padx=10, pady=10)
 
-boton_calc_gauss = tk.Button(frame_pantalla_sis_ecuaciones, text="Metodo de Gauss Jordan",font=("Times New Roman", 10), command=Calculadora_gauss,width=30, height=3)
+boton_regresar2 = tk.Button(frame_pantalla_sis_ecuaciones, text="Regresar", activebackground="#a93a48",bg="#c93a48", command=pantalla_principal, font=("Times New Roman", 10), width=30, height=3)
+boton_regresar2.grid(row=4, column=1, padx=10, pady=10)
+
+boton_calc_gauss = tk.Button(frame_pantalla_sis_ecuaciones, activebackground="#0085fa", bg="#00bbfa",text="Metodo de Gauss Jordan",font=("Times New Roman", 10), command=Calculadora_gauss,width=30, height=3)
 boton_calc_gauss.grid(row=2, column=1, padx=10, pady=10)
 
-boton_calc_cramer = tk.Button(frame_pantalla_sis_ecuaciones,text="Metodo de Cramer",font=("Times New Roman", 10),command=Calculadora_cramer,width=30, height=3)
+boton_calc_cramer = tk.Button(frame_pantalla_sis_ecuaciones, activebackground="#0085fa", bg="#00bbfa", text="Metodo de Cramer",font=("Times New Roman", 10),command=Calculadora_cramer,width=30, height=3)
 boton_calc_cramer.grid(row=3, column=1, padx=10, pady=10)
 
 #👍︎♒︎❒︎♓︎⬧︎ ●︎□︎ ♋︎♍︎♏︎◻︎⧫︎□︎ ⬧︎□︎⍓︎ ◆︎■︎ ⧫︎❒︎♏︎❍︎♏︎■︎♎︎□︎ ♓︎♎︎♓︎□︎⧫︎♋︎ ◻︎□︎❒︎ ■︎□︎ ♒︎♋︎♌︎♏︎❒︎ ◆︎⬧︎♋︎♎︎□︎ ☝︎🏱︎❄︎ ♍︎□︎❍︎□︎ ❒︎♏︎⬧︎◻︎♋︎●︎♎︎□︎ ◻︎♋︎❒︎♋︎ ❍︎♓︎ ❍︎♋︎♐︎◆︎♐︎♋︎♎︎♋︎ ⍓︎ ■︎□︎ ◻︎□︎■︎♏︎❒︎❍︎♏︎ ♋︎ ❖︎♏︎❒︎ ♏︎🙰♏︎❍︎◻︎●︎□︎⬧︎ ◻︎♋︎❒︎♋︎ ♒︎♋︎♍︎♏︎❒︎●︎□︎ ♎︎♏︎ ♐︎□︎❒︎❍︎♋︎ ❍︎♋︎⬧︎ ♏︎♐︎♓︎♍︎♓︎♏︎■︎⧫︎♏︎ ◻︎♏︎❒︎□︎ ■︎□︎ ⬧︎♏︎ ◻︎◆︎♏︎♎︎♏︎ ♎︎♏︎♍︎♓︎❒︎ ❑︎◆︎♏︎ ■︎□︎ ⧫︎❒︎♋︎♌︎♋︎🙰♏︎ ⧫︎♋︎❍︎◻︎□︎♍︎□︎ ◻︎□︎❒︎❑︎◆︎♏︎ ♋︎ ◻︎♏︎⬧︎♋︎❒︎ ♎︎♏︎ ⧫︎□︎♎︎□︎ ⬧︎♋︎❑︎◆︎♏︎ ♋︎♎︎♏︎●︎♋︎■︎⧫︎♏︎ ●︎♋︎⬧︎ ♍︎□︎⬧︎♋︎⬧︎ ♋︎ ♍︎□︎❍︎□︎ ◻︎□︎♎︎í♋︎📪︎ ♑︎❒︎♋︎♍︎♓︎♋︎⬧︎ ◻︎□︎❒︎ ⧫︎□︎♎︎♋︎ ●︎♋︎ ♋︎⍓︎◆︎♎︎♋︎ ♏︎■︎⬧︎♏︎❒︎♓︎□︎ ◻︎♋︎❒︎♋︎ ♋︎❒︎❒︎♏︎♑︎●︎♋︎❒︎ ♏︎⬧︎⧫︎♋︎ ♍︎□︎⬧︎♋︎ ⍓︎ ❖︎♏︎⌘︎ ♍︎□︎❍︎□︎ ♒︎♋︎♍︎♏︎❒︎ ❍︎□︎♎︎⬧︎ ⍓︎ ♏︎⬧︎♍︎❒︎♓︎♌︎♓︎❒︎ ♍︎ó♎︎♓︎♑︎□︎ ♎︎♏︎⬧︎♎︎♏︎ 📁︎ ■︎□︎ ♏︎⬧︎ ♓︎♑︎◆︎♋︎●︎ 🙰♋︎🙰♋︎🙰♋︎ ♎︎♏︎ ❖︎♏︎❒︎♎︎♋︎♎︎ ❍︎◆︎♍︎♒︎♋︎⬧︎ ♑︎❒︎♋︎♍︎♓︎♋︎⬧︎ ♋︎◆︎■︎❑︎◆︎♏︎ ❍︎♏︎ ❑︎◆︎♏︎🙰♏︎ ❍︎◆︎♍︎♒︎□︎ ♋︎♍︎♏︎◻︎⧫︎□︎ ❑︎◆︎♏︎ ⬧︎□︎⬧︎ ◆︎■︎ ♌︎◆︎♏︎■︎ ●︎í♎︎♏︎❒︎ ⍓︎ ♎︎♏︎ ❖︎♏︎❒︎♎︎♋︎♎︎ ⧫︎♏︎ ♋︎◻︎❒︎♏︎♍︎♓︎□︎ ◆︎■︎ ♍︎♒︎♓︎■︎♑︎□︎ ♍︎□︎❍︎□︎ ♋︎❍︎♓︎♑︎□︎ ♎︎♏︎ ■︎◆︎♏︎❖︎□︎ ♑︎❒︎♋︎♍︎♓︎♋︎⬧︎📬︎

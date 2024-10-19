@@ -364,7 +364,7 @@ def operaciones_Algebra(Frame2, volver_inicio):
                 fila = []
                 for j in range(columnas):
                     entrada = tk.Entry(frame_calc_gauss, width=5, bg="#79d7fd")
-                    entrada.grid(row=i + 2, column=j + 1, padx=2, pady=5)
+                    entrada.grid(row=i + 2, column=j + 5, padx=2, pady=5)
                     fila.append(entrada)
                 entradas_matriz.append(fila)
             
@@ -489,7 +489,7 @@ def operaciones_Algebra(Frame2, volver_inicio):
                 fila = []
                 for j in range(columnas):
                     entrada = tk.Entry(frame_calc_cramer, width=5, bg="#79d7fd")
-                    entrada.grid(row=i + 2, column=j + 1, padx=5, pady=5)
+                    entrada.grid(row=i + 2, column=j + 5, padx=2, pady=5)
                     fila.append(entrada)
                 entradas_matriz.append(fila)
                 

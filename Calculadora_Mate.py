@@ -163,5 +163,5 @@ def operaciones_matematica_discreta(frame, volver_inicio,):
 
     btnpatras_com = tk.Button(panta_comb, activebackground="#a93a48", bg="#c93a48", text="Regresar", command=lambda: mostrar(panta_princi), font=("Times New Roman", 10), width=10, height=2)
     btnpatras_com.grid(row=1, column=0, pady=10)
-
+    #pe🐟
     mostrar(panta_princi) #llama a la pantalla principal para seleccionar la operacion 

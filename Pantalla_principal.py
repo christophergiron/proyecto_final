@@ -137,7 +137,7 @@ tree.pack(padx=10, pady=50)  # Usamos pack en lugar de grid para este caso
 # Botón para regresar a la pantalla principal
 boton_volver_integrantes = tk.Button(frame_integrantes, text="Volver al Inicio", command=pantalla_inicio)
 boton_volver_integrantes.pack(pady=5)  # Colocamos el botón debajo del Treeview usando pack
-
+#poyo 🐥
 pantalla_inicio()
 
 ventana.mainloop()

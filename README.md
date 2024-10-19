@@ -63,15 +63,21 @@ Realizar operaciones varias con matrices como multiplicar, conseguir la matriz i
 
 ### Demostracion visual
 ![](./audiovisual/Capturas/Calculador_algebra_lineal/Menu_principal.png)
+
 ![](./audiovisual/Capturas/Calculador_algebra_lineal/Menu_metodos.png)
 
 ### Ejemplos de uso
 ![](./audiovisual/Capturas/Calculador_algebra_lineal/Matriz_inversa.png)
+
 ![](./audiovisual/Capturas/Calculador_algebra_lineal/Multiplicacion.png)
 
 #### Sistemas de ecuaciones diferentes metodos
 
+***Metodo de Gauss-Jordan***
+![](./audiovisual/Capturas/Calculador_algebra_lineal/Metodo_gauss.png)
 
+***Metodo de Cramer***
+![](./audiovisual/Capturas/Calculador_algebra_lineal/Metodo_cramer.png)
 
 ## **Extras**
 

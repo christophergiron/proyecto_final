@@ -279,10 +279,10 @@ def operaciones_Algebra(Frame2, volver_inicio):
                         messagebox.showerror("Error", "Estas matrices no se pueden multiplicar!!!")
                     else:
                         correctorDePosicionM1 = tk.Frame(frame_pantalla_Multiplicacion, bg="#00183e")
-                        correctorDePosicionM1.grid(row=4, column=1, columnspan=columnas)
+                        correctorDePosicionM1.grid(row=4, column=0, columnspan=columnas)
 
                         correctorDePosicionM2 = tk.Frame(frame_pantalla_Multiplicacion, bg="#00183e")
-                        correctorDePosicionM2.grid(row=4, column=3, columnspan=columnas_M2)
+                        correctorDePosicionM2.grid(row=4, column=columnas + 1, columnspan=columnas_M2)
                         
                         entradas_matriz = []
                         for i in range(filas):
@@ -364,7 +364,7 @@ def operaciones_Algebra(Frame2, volver_inicio):
                 fila = []
                 for j in range(columnas):
                     entrada = tk.Entry(frame_calc_gauss, width=5, bg="#79d7fd")
-                    entrada.grid(row=i + 2, column=j + 2, padx=5, pady=5)
+                    entrada.grid(row=i + 2, column=j + 1, padx=2, pady=5)
                     fila.append(entrada)
                 entradas_matriz.append(fila)
             
@@ -372,7 +372,7 @@ def operaciones_Algebra(Frame2, volver_inicio):
                 boton_calcular.destroy()
 
             boton_calcular = tk.Button(frame_calc_gauss, text="Calcular", activebackground="#0085fa", bg="#00bbfa", command=lambda: calcular_solucion(entradas_matriz))
-            boton_calcular.grid(row=6 + filas, column=1, columnspan=2, padx=5, pady=5)
+            boton_calcular.grid(row=10, column=1, columnspan=2, padx=2, pady=5)
 
         def calcular_solucion(entradas):
             limpiar_resultado_y_boton()  # Limpiar cualquier resultado y botón anterior
@@ -405,7 +405,7 @@ def operaciones_Algebra(Frame2, volver_inicio):
                 # Crear botón de graficar solo si el cálculo fue exitoso
                 global boton_graficar
                 boton_graficar = tk.Button(frame_calc_gauss, activebackground="#0085fa",bg="#00bbfa", text="Mostrar Gráfica", command=lambda: mostrar_grafica(resultado))
-                boton_graficar.grid(row=8, column=1, columnspan=2, padx=5, pady=5)
+                boton_graficar.grid(row=10, column=3, columnspan=2, padx=5, pady=5)
 
             except Exception as e:
                 messagebox.showerror("Error", f"Error al calcular la solución: {str(e)}")
@@ -440,24 +440,24 @@ def operaciones_Algebra(Frame2, volver_inicio):
                 plt.show()
 
         # Botones para seleccionar el tamaño de la matriz
-        instruccionSize = tk.Label(frame_calc_gauss, bg="#ffc54a", text="Seleccione el tamaño del sistema de ecuaciones")
+        instruccionSize = tk.Label(frame_calc_gauss, bg="#ffc54a", text="Seleccione el tamaño del sistema de ecuaciones", width=50)
         instruccionSize.grid(row=0, column=1, columnspan=4, padx=10, pady=10)
             
         boton_2x2 = tk.Button(frame_calc_gauss, text="2x2", activebackground="#0085fa", bg="#00bbfa", command=lambda: generar_matriz(2, 3))
-        boton_2x2.grid(row=1, column=1, padx=10, pady=10)
+        boton_2x2.grid(row=1, column=1, padx=5, pady=10)
         boton_3x3 = tk.Button(frame_calc_gauss, text="3x3", activebackground="#0085fa", bg="#00bbfa", command=lambda: generar_matriz(3, 4))
-        boton_3x3.grid(row=1, column=2, padx=10, pady=10)
+        boton_3x3.grid(row=1, column=2, padx=5, pady=10)
         boton_4x4 = tk.Button(frame_calc_gauss, text="4x4", activebackground="#0085fa", bg="#00bbfa", command=lambda: generar_matriz(4, 5))
-        boton_4x4.grid(row=1, column=3, padx=10, pady=10)
+        boton_4x4.grid(row=1, column=3, padx=5, pady=10)
         
         boton_regresar_gaus = tk.Button(frame_calc_gauss, text=("regresar"), activebackground="#a93a48",bg="#c93a48", command=pantalla_Sis_ecuaciones, width=10)
         boton_regresar_gaus.grid(row=0, column=0, padx=5, pady=5)
         
         resultado_label = tk.Label(frame_calc_gauss, bg="#ffc54a", text="", width=80)
-        resultado_label.grid(row=7, column=1, columnspan=3, padx=10, pady=10)
+        resultado_label.grid(row=13, column=1, columnspan=20, padx=10, pady=10)
         
-        procedimiento_label = tk.Label(frame_calc_gauss, bg="#ffc54a", text="", justify="left")
-        procedimiento_label.grid(row=9, column=1, columnspan=3, padx=10, pady=10)
+        procedimiento_label = tk.Label(frame_calc_gauss, bg="#ffc54a", text="", justify="left", width=80)
+        procedimiento_label.grid(row=14, column=1, padx=10, columnspan=20 ,pady=10)
         
     def sis_ecu_cramer():
         global boton_calcular_cramer, boton_graficar_cramer, entradas_matriz, resultado_label, procedimiento_label
@@ -489,7 +489,7 @@ def operaciones_Algebra(Frame2, volver_inicio):
                 fila = []
                 for j in range(columnas):
                     entrada = tk.Entry(frame_calc_cramer, width=5, bg="#79d7fd")
-                    entrada.grid(row=i + 2, column=j + 2, padx=5, pady=5)
+                    entrada.grid(row=i + 2, column=j + 1, padx=5, pady=5)
                     fila.append(entrada)
                 entradas_matriz.append(fila)
                 
@@ -497,7 +497,7 @@ def operaciones_Algebra(Frame2, volver_inicio):
                 boton_calcular_cramer.destroy()
                 
             boton_calcular_cramer = tk.Button(frame_calc_cramer, text="Calcular", activebackground="#0085fa", bg="#00bbfa", command=lambda: calcular_solucion(entradas_matriz))
-            boton_calcular_cramer.grid(row=6 + filas, column=1, columnspan=2, padx=5, pady=5)
+            boton_calcular_cramer.grid(row=10, column=1, columnspan=2, padx=5, pady=5)
             
         def calcular_solucion(entradas):
             limpiar_resultado_y_boton_cra()
@@ -572,24 +572,24 @@ def operaciones_Algebra(Frame2, volver_inicio):
             """Convierte la matriz a una representación de cadenas de fracciones."""
             return '\n'.join(['\t'.join([str(Fraction(x).limit_denominator()) for x in fila]) for fila in matriz])
     
-        instruccionSize = tk.Label(frame_calc_cramer, bg="#ffc54a", text="Seleccione el tamaño del sistema de ecuaciones")
+        instruccionSize = tk.Label(frame_calc_cramer, bg="#ffc54a", text="Seleccione el tamaño del sistema de ecuaciones", width=50)
         instruccionSize.grid(row=0, column=1, columnspan=4, padx=10, pady=10)
             
         boton_2x2 = tk.Button(frame_calc_cramer, activebackground="#0085fa", bg="#00bbfa", text="2x2", command=lambda: generar_matriz_cra(2, 3))
-        boton_2x2.grid(row=1, column=1, padx=10, pady=10)
+        boton_2x2.grid(row=1, column=1, padx=5, pady=10)
         boton_3x3 = tk.Button(frame_calc_cramer, text="3x3", activebackground="#0085fa", bg="#00bbfa",  command=lambda: generar_matriz_cra(3, 4))
-        boton_3x3.grid(row=1, column=2, padx=10, pady=10)
+        boton_3x3.grid(row=1, column=2, padx=5, pady=10)
         boton_4x4 = tk.Button(frame_calc_cramer, text="4x4", activebackground="#0085fa", bg="#00bbfa", command=lambda: generar_matriz_cra(4, 5))
-        boton_4x4.grid(row=1, column=3, padx=10, pady=10)
+        boton_4x4.grid(row=1, column=3, padx=5, pady=10)
         
         boton_regresar_cramer = tk.Button(frame_calc_cramer, text=("regresar"), activebackground="#a93a48", bg="#c93a48", command=pantalla_Sis_ecuaciones, width=10)
         boton_regresar_cramer.grid(row=0, column=0, padx=5, pady=5)
         
         resultado_label = tk.Label(frame_calc_cramer, bg="#ffc54a", text="", width=80)
-        resultado_label.grid(row=7, column=1, columnspan=3, padx=10, pady=10)
+        resultado_label.grid(row=13, column=1, columnspan=20, padx=10, pady=10)
     
-        procedimiento_label = tk.Label(frame_calc_cramer, bg="#ffc54a", text="", justify="left")
-        procedimiento_label.grid(row=9, column=1, columnspan=3, padx=10, pady=10)
+        procedimiento_label = tk.Label(frame_calc_cramer, bg="#ffc54a", text="", justify="left", width=80)
+        procedimiento_label.grid(row=14, column=1, columnspan=20, padx=10, pady=10)
         
     # Definición de botones en la pantalla principal
     boton_inversa = tk.Button(Frame2, activebackground="#0085fa", bg="#00bbfa",text="Matriz Inversa",font=("Times New Roman", 10),command=pantalla_Minversa, width=30, height=3)

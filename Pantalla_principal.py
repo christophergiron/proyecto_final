@@ -10,7 +10,7 @@ carpeta_recursos = os.path.join(os.path.dirname(__file__), 'audiovisual')
 ventana = tk.Tk()
 ventana.title("Proyecto Final")
 ventana.geometry("800x500")
-ventana.resizable(0, 0)
+ventana.resizable(0, 1)
 ventana.iconbitmap(os.path.join(carpeta_recursos, 'logo.ico'))
 ventana.config(bg="#00183e")
 # Inicializa pygame para la reproducción de sonidos

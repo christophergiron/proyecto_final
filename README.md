@@ -14,6 +14,11 @@ Permite el libre acceso a las pantallas en las cuales estan disponibles las calc
   
 ### Como se hace
 Haciendo clic en los 3 posibles botones que redireccionaran a las pantallas disponibles en el proyecto una vez terminadas de usar las calculadoras disponibles tiene la libertar de cerrar el programa presionando el boton rojo en la parte inferior del programa.
+
+### Demostracion visual
+![](audiovisual/Capturas/pantalla_inicial/tutorial_de_la_interfaz_principal.png)
+
+![](audiovisual/Capturas/pantalla_inicial/pantalla_integrantes.png)
   
 ## **Calculadora de combinaciones y permutaciones**
 
@@ -26,13 +31,15 @@ Calcula la cantidad de combinaciones y permutaciones, con formulas internas most
 cantidad de estas mismas que se pueden realizar
 
 ### Como se hace
-1)Seleccionar la Operación
-2)Introducir los valores en las 2 entradas
-3)Seleccionar el tipo de repetición (Sin Repetición) esta por Defecto
-4)Presionar el botón Calcular y ver el resultado y con que formula se llego al mismo
+* Seleccionar la Operación
+* Introducir los valores en las 2 entradas
+* Seleccionar el tipo de repetición (Sin Repetición) esta por Defecto
+* Presionar el botón Calcular y ver el resultado y con que formula se llego al mismo
+
+### Demostracion visual
+![](./audiovisual/Capturas/Calculadora_matematica_discreta/Instrucciones1.png)
 
 ![](./audiovisual/Capturas/Calculadora_matematica_discreta/Instrucciones2.png)
-
 
 ## **Calculadora de algebra lineal**
 
@@ -43,3 +50,7 @@ Con esta calculadora Se pueden realizar
 ### Que hace
 
 ### Como se hace
+
+## **Extras**
+
+Se puede encontrar [aqui](/audiovisual/Capturas/) varias capturas del codigo fuente de este proyecto para posibles referencias.

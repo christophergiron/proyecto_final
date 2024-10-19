@@ -1,5 +1,6 @@
 import tkinter as tk
-import Calculadora_Mate as CM 
+import Calculadora_Mate as CM
+import Calculadora_Algebra as CA 
 import pygame
 import os
 from tkinter import ttk
@@ -43,6 +44,10 @@ def pantalla_algebra():
     boton2.grid_forget()
     boton_integrantes.grid_forget()
     kill.place_forget()
+    
+    for widget in algebra_lineal.winfo_children():
+        widget.destroy()
+    CA.operaciones_Algebra(algebra_lineal, pantalla_inicio)
 
     boton_volver_algebra.grid(row=4, column=1, padx=10, pady=10)
 
@@ -60,7 +65,7 @@ def pantalla_matematica():
     for widget in matematica_discreta.winfo_children():
         widget.destroy()  # Limpia el contenido del frame
     CM.operaciones_matematica_discreta(matematica_discreta, pantalla_inicio)  # Llamar la función del segundo script
-
+    
     boton_volver_matematica.grid(row=4, column=1, padx=10, pady=10)
 
 def pantalla_integrantes():

@@ -21,6 +21,7 @@ def operaciones_Algebra(Frame2, volver_inicio):
     boton_calcular_cramer = None
     boton_graficar_cramer = None
     resultado_label = None
+    procedimiento_label = None
     # Frames para que funcione bien la posición
     correctorDePosicionM1 = None
     correctorDePosicionM2 = None
@@ -47,7 +48,6 @@ def operaciones_Algebra(Frame2, volver_inicio):
         boton_Multi.grid(row=2, column=3, padx=302, pady=10)
         boton_sis_ecuaciones.grid(row=3, column=3, padx=302, pady=10)
         operacionselecionar.grid(row=0, column=3, padx=302, pady=30)
-        
 
     def pantalla_Minversa():
         global correctorDePosicionM1, correctorDePosicionM2, entradas_matriz
@@ -96,7 +96,6 @@ def operaciones_Algebra(Frame2, volver_inicio):
         boton_Multi.grid_forget()
         boton_sis_ecuaciones.grid_forget()
         operacionselecionar.grid_forget()
-
         
         boton_regresar2 = tk.Button(frame_pantalla_sis_ecuaciones, text="Regresar", activebackground="#a93a48", bg="#c93a48", command=pantalla_principal, font=("Times New Roman", 10), width=30, height=3)
         boton_regresar2.grid(row=3, column=3, padx=302, pady=10)
@@ -106,8 +105,6 @@ def operaciones_Algebra(Frame2, volver_inicio):
         
         boton_calc_gauss.grid(row=1, column=3, padx=302, pady=10)
         boton_calc_cramer.grid(row=2, column=3, padx=302, pady=10)
-        
-        
         
     def Calculadora_gauss():
         limpiar_frame(frame_calc_gauss)
@@ -338,7 +335,7 @@ def operaciones_Algebra(Frame2, volver_inicio):
         boton_regresar_multi.grid(row=0, column=0, padx=5, pady=5)
 
     def sis_ecu_Gaus():
-        global boton_calcular, boton_graficar, entradas_matriz, resultado_label
+        global boton_calcular, boton_graficar, entradas_matriz, resultado_label, procedimiento_label
 
         def limpiar_matriz():
             # Eliminar todas las entradas anteriores
@@ -350,16 +347,18 @@ def operaciones_Algebra(Frame2, volver_inicio):
         def limpiar_resultado_y_boton():
             # Limpiar el resultado anterior
             resultado_label.config(text="")
+            # Encargado de limpiar el procedimiento
+            procedimiento_label.config(text="")
             # Si hay un botón de graficar, lo eliminamos
             if boton_graficar is not None:
-                boton_graficar.destroy() 
+                boton_graficar.destroy()
             plt.close('all')
 
         def generar_matriz(filas, columnas):
             global boton_calcular, boton_graficar, entradas_matriz
             limpiar_matriz()  # Limpiar cualquier matriz previa
             limpiar_resultado_y_boton()  # Limpiar el resultado y botón previo
-            
+
             entradas_matriz = []
             for i in range(filas):
                 fila = []
@@ -372,43 +371,50 @@ def operaciones_Algebra(Frame2, volver_inicio):
             if boton_calcular is not None:
                 boton_calcular.destroy()
 
-            boton_calcular = tk.Button(frame_calc_gauss, text="Calcular", activebackground="#0085fa",bg="#00bbfa", command=lambda: calcular_solucion(entradas_matriz))
+            boton_calcular = tk.Button(frame_calc_gauss, text="Calcular", activebackground="#0085fa", bg="#00bbfa", command=lambda: calcular_solucion(entradas_matriz))
             boton_calcular.grid(row=6 + filas, column=1, columnspan=2, padx=5, pady=5)
 
         def calcular_solucion(entradas):
             limpiar_resultado_y_boton()  # Limpiar cualquier resultado y botón anterior
+
             try:
                 matriz = np.array([[float(entradas[i][j].get()) for j in range(len(entradas[0]))] for i in range(len(entradas))])
                 filas, columnas = matriz.shape
                 argumento = np.hstack((matriz[:, :-1], matriz[:, -1].reshape(-1, 1)))
+
+                procedimiento = "Procedimiento:\n"
                 
                 for i in range(filas):
                     pivot = argumento[i, i]
                     if pivot == 0:
                         messagebox.showerror("Error", "El sistema no tiene solución única.")
                         return
-                    argumento[i] = argumento[i] / pivot
+                    argumento[i] = argumento[i] / pivot  # Normalizar la fila
+                    procedimiento += f"Fila {i+1} se divide por {pivot}:\n{argumento}\n"
                     
                     for j in range(filas):
                         if j != i:
-                            argumento[j] -= argumento[j, i] * argumento[i]
+                            factor = argumento[j, i]
+                            argumento[j] -= factor * argumento[i]  # Eliminar elemento
+                            procedimiento += f"Fila {j+1} se resta con {factor} * Fila {i+1}:\n{argumento}\n"
                             
                 resultado = argumento[:, -1]
                 resultado_label.config(text=f"Solución:\n{resultado}")
+                procedimiento_label.config(text=procedimiento)
                 
                 # Crear botón de graficar solo si el cálculo fue exitoso
                 global boton_graficar
                 boton_graficar = tk.Button(frame_calc_gauss, activebackground="#0085fa",bg="#00bbfa", text="Mostrar Gráfica", command=lambda: mostrar_grafica(resultado))
                 boton_graficar.grid(row=8, column=1, columnspan=2, padx=5, pady=5)
-                
+
             except Exception as e:
                 messagebox.showerror("Error", f"Error al calcular la solución: {str(e)}")
-        
+
         def mostrar_grafica(resultado):
             if len(resultado) == 2:
                 x_vals = np.linspace(-10, 10, 100)
                 y_vals = resultado[0] * x_vals + resultado[1]
-                
+
                 plt.plot(x_vals, y_vals, label='Solución del sistema')
                 plt.xlabel('X')
                 plt.ylabel('Y')
@@ -417,15 +423,15 @@ def operaciones_Algebra(Frame2, volver_inicio):
                 plt.grid(True)
                 plt.show()
             elif len(resultado) == 3:
-                
+
                 fig = plt.figure()
                 ax = fig.add_subplot(111, projection='3d')
-                
+
                 x_vals = np.linspace(-10, 10, 100)
                 y_vals = np.linspace(-10, 10, 100)
                 X, Y = np.meshgrid(x_vals, y_vals)
                 Z = resultado[0] * X + resultado[1] * Y + resultado[2]
-                
+
                 ax.plot_surface(X, Y, Z, cmap='viridis')
                 ax.set_xlabel('X')
                 ax.set_ylabel('Y')
@@ -450,8 +456,11 @@ def operaciones_Algebra(Frame2, volver_inicio):
         resultado_label = tk.Label(frame_calc_gauss, bg="#ffc54a", text="", width=80)
         resultado_label.grid(row=7, column=1, columnspan=3, padx=10, pady=10)
         
+        procedimiento_label = tk.Label(frame_calc_gauss, bg="#ffc54a", text="", justify="left")
+        procedimiento_label.grid(row=9, column=1, columnspan=3, padx=10, pady=10)
+        
     def sis_ecu_cramer():
-        global boton_calcular_cramer, boton_graficar, entradas_matriz, resultado_label
+        global boton_calcular_cramer, boton_graficar_cramer, entradas_matriz, resultado_label, procedimiento_label
         
         def limpiar_matriz_cra():
             # Eliminar todas las entradas anteriores
@@ -463,13 +472,15 @@ def operaciones_Algebra(Frame2, volver_inicio):
         def limpiar_resultado_y_boton_cra():
             # Limpiar el resultado anterior
             resultado_label.config(text="")
+            # Limpiar el procedimiento
+            procedimiento_label.config(text="")
             # Si hay un botón de graficar, lo eliminamos
             if boton_graficar_cramer is not None:
                 boton_graficar_cramer.destroy()
-            plt.close('all')
+            plt.close('all') # Se encarga de cerrar la grafica abierta en ese momento al generar una nueva matriz
             
         def generar_matriz_cra(filas, columnas):
-            global boton_calcular_cramer, boton_graficar, entradas_matriz
+            global boton_calcular_cramer, boton_graficar_cramer, entradas_matriz
             limpiar_matriz_cra()  # Limpiar cualquier matriz previa
             limpiar_resultado_y_boton_cra()  # Limpiar el resultado y botón previo
 
@@ -478,14 +489,14 @@ def operaciones_Algebra(Frame2, volver_inicio):
                 fila = []
                 for j in range(columnas):
                     entrada = tk.Entry(frame_calc_cramer, width=5, bg="#79d7fd")
-                    entrada.grid(row=i +2, column=j + 2, padx=5, pady=5)
+                    entrada.grid(row=i + 2, column=j + 2, padx=5, pady=5)
                     fila.append(entrada)
                 entradas_matriz.append(fila)
                 
             if boton_calcular_cramer is not None:
                 boton_calcular_cramer.destroy()
                 
-            boton_calcular_cramer = tk.Button(frame_calc_cramer, text="Calcular", activebackground="#0085fa",bg="#00bbfa", command=lambda: calcular_solucion(entradas_matriz))
+            boton_calcular_cramer = tk.Button(frame_calc_cramer, text="Calcular", activebackground="#0085fa", bg="#00bbfa", command=lambda: calcular_solucion(entradas_matriz))
             boton_calcular_cramer.grid(row=6 + filas, column=1, columnspan=2, padx=5, pady=5)
             
         def calcular_solucion(entradas):
@@ -493,15 +504,17 @@ def operaciones_Algebra(Frame2, volver_inicio):
             try:
                 matriz = np.array([[float(entradas[i][j].get()) for j in range(len(entradas[0]))] for i in range(len(entradas))])
                 filas, columnas = matriz.shape
+                procedimiento = "Procedimiento:\n"
                 
                 if filas != columnas - 1:
                     messagebox.showerror("Error", "La matriz no tiene un formato válido.")
                     return
                 
-                A = matriz[:, :-1]
-                b = matriz[:, -1]
+                A = matriz[:, :-1]  # Matriz de coeficientes
+                b = matriz[:, -1]   # Vector de resultados
                 
                 det_A = np.linalg.det(A)
+                procedimiento += f"Determinante de la matriz A:\n{formatear_matriz(A)}\nDet(A) = {Fraction(det_A).limit_denominator()}\n\n"
                 if det_A == 0:
                     messagebox.showerror("Error", "El sistema no tiene solución única.")
                     return
@@ -511,11 +524,13 @@ def operaciones_Algebra(Frame2, volver_inicio):
                     Ai = np.copy(A)
                     Ai[:, i] = b
                     det_Ai = np.linalg.det(Ai)
+                    procedimiento += f"Determinante de la matriz A con la columna {i+1} reemplazada por el vector b:\n{formatear_matriz(Ai)}\nDet(A_{i+1}) = {Fraction(det_Ai).limit_denominator()}\n\n"
                     solucion = det_Ai / det_A
                     soluciones.append(Fraction(solucion).limit_denominator())
                     
                 soluciones_str = ', '.join([str(sol) for sol in soluciones])
                 resultado_label.config(text=f"Solución:\n{soluciones_str}")
+                procedimiento_label.config(text=procedimiento)
                 
                 global boton_graficar_cramer
                 boton_graficar_cramer = tk.Button(frame_calc_cramer, activebackground="#0085fa",bg="#00bbfa", text="Mostrar Gráfica", command=lambda: mostrar_grafica(soluciones))
@@ -537,6 +552,7 @@ def operaciones_Algebra(Frame2, volver_inicio):
                 plt.grid(True)
                 plt.show()
             elif len(soluciones) == 3:
+
                 fig = plt.figure()
                 ax = fig.add_subplot(111, projection='3d')
                 
@@ -552,6 +568,10 @@ def operaciones_Algebra(Frame2, volver_inicio):
                 plt.title('Gráfica del sistema 3x3')
                 plt.show()
 
+        def formatear_matriz(matriz):
+            """Convierte la matriz a una representación de cadenas de fracciones."""
+            return '\n'.join(['\t'.join([str(Fraction(x).limit_denominator()) for x in fila]) for fila in matriz])
+    
         instruccionSize = tk.Label(frame_calc_cramer, bg="#ffc54a", text="Seleccione el tamaño del sistema de ecuaciones")
         instruccionSize.grid(row=0, column=1, columnspan=4, padx=10, pady=10)
             
@@ -562,11 +582,14 @@ def operaciones_Algebra(Frame2, volver_inicio):
         boton_4x4 = tk.Button(frame_calc_cramer, text="4x4", activebackground="#0085fa", bg="#00bbfa", command=lambda: generar_matriz_cra(4, 5))
         boton_4x4.grid(row=1, column=3, padx=10, pady=10)
         
-        boton_regresar_cramer = tk.Button(frame_calc_cramer, text=("regresar"), activebackground="#a93a48",bg="#c93a48",command=pantalla_Sis_ecuaciones, width=10)
+        boton_regresar_cramer = tk.Button(frame_calc_cramer, text=("regresar"), activebackground="#a93a48", bg="#c93a48", command=pantalla_Sis_ecuaciones, width=10)
         boton_regresar_cramer.grid(row=0, column=0, padx=5, pady=5)
         
         resultado_label = tk.Label(frame_calc_cramer, bg="#ffc54a", text="", width=80)
         resultado_label.grid(row=7, column=1, columnspan=3, padx=10, pady=10)
+    
+        procedimiento_label = tk.Label(frame_calc_cramer, bg="#ffc54a", text="", justify="left")
+        procedimiento_label.grid(row=9, column=1, columnspan=3, padx=10, pady=10)
         
     # Definición de botones en la pantalla principal
     boton_inversa = tk.Button(Frame2, activebackground="#0085fa", bg="#00bbfa",text="Matriz Inversa",font=("Times New Roman", 10),command=pantalla_Minversa, width=30, height=3)

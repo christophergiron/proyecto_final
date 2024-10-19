@@ -10,3 +10,7 @@ Puedes ver [aqui](./Diccionario_de_datos.md) el listado completo con las variabl
 
 ## **Calculadora de algebra lineal**
 
+### ¿Que es lo que puede realizar?
+
+Con esta calculadora Se pueden realizar 
+

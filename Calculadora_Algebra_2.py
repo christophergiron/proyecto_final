@@ -21,6 +21,9 @@ boton_graficar = None
 boton_calcular_cramer = None
 boton_graficar_cramer = None
 resultado_label = None
+#Frames unicamente para que funcione bien la posicion
+correctorDePosicionM1 = None
+correctorDePosicionM2 = None
 entradas_matriz = []
 
 def limpiar_frame(frame, except_widgets=[]):
@@ -65,6 +68,7 @@ def pantalla_Multiplicacion():
     boton_inversa.grid_forget()
     boton_Multi.grid_forget()
     boton_sis_ecuaciones.grid_forget()
+    multi()
     
 def pantalla_Sis_ecuaciones():
     frame_pantalla_sis_ecuaciones.grid()
@@ -106,6 +110,7 @@ def Calculadora_cramer():
     boton_Multi.grid_forget()
     boton_sis_ecuaciones.grid_forget()
     sis_ecu_cramer()
+    
 def Calculadora_inversa():
     # Etiqueta de instrucciones
     instruccion_inversa = tk.Label(frame_Pantalla_Minversa,  bg="#ffc54a",text="Ingrese las dimensiones de su matriz")
@@ -189,7 +194,120 @@ def mostrar_resultado(matriz_inversa, tamano):
     for i in range(matriz_inversa.shape[0]):
         for j in range(matriz_inversa.shape[1]):
             tk.Label(frame_Pantalla_Minversa, bg="#ffc54a",text=f"{matriz_inversa[i, j]:.2f}").grid(row=i + tamano + 6, column=j, padx=5, pady=5,)
+            
+def multi():
+    instruccionMulti = tk.Label(frame_pantalla_Multiplicacion, text="Ingrese el tamaño de sus matrices: ")
+    instruccionMulti.grid(row=0, column=1, columnspan=2, padx=10, pady=10)
+    
+    instruccionMulti_M1 = tk.Label(frame_pantalla_Multiplicacion, text="Primera Matriz")
+    instruccionMulti_M1.grid(row=1, column=0, columnspan=2, padx=10, pady=10)
+    
+    instruccionMulti_M2 = tk.Label(frame_pantalla_Multiplicacion, text="Segunda Matriz")
+    instruccionMulti_M2.grid(row=1, column=2, columnspan=2, padx=10, pady=10)
+    
+    fila_la1 = tk.Label(frame_pantalla_Multiplicacion, text="Filas: ")
+    fila_la1.grid(row=2, column=0)
+    fila_e1 = tk.Entry(frame_pantalla_Multiplicacion, width=5)
+    fila_e1.grid(row=2, column=1)
 
+    columna_la1 = tk.Label(frame_pantalla_Multiplicacion, text="Columnas: ")
+    columna_la1.grid(row=3, column=0)
+    columna_e1 = tk.Entry(frame_pantalla_Multiplicacion, width=5)
+    columna_e1.grid(row=3, column=1)
+    
+    fila_la2 = tk.Label(frame_pantalla_Multiplicacion, text="Filas: ")
+    fila_la2.grid(row=2, column=2)
+    fila_e2 = tk.Entry(frame_pantalla_Multiplicacion, width=5)
+    fila_e2.grid(row=2, column=3)
+
+    columna_la2 = tk.Label(frame_pantalla_Multiplicacion, text="Columnas: ")
+    columna_la2.grid(row=3, column=2)
+    columna_e2 = tk.Entry(frame_pantalla_Multiplicacion, width=5)
+    columna_e2.grid(row=3, column=3)
+    
+    #Genera la cuadricula de la matriz
+    def generar_matriz():
+        global boton_calcular, correctorDePosicionM1, correctorDePosicionM2
+        # Si existe un frame de matriz previo, eliminarlo
+        if boton_calcular is not None:
+            boton_calcular.destroy()
+            
+        if correctorDePosicionM2 is not None:
+            correctorDePosicionM1.destroy()
+            
+        if correctorDePosicionM2 is not None:
+            correctorDePosicionM2.destroy()
+ 
+        try:
+            # Captura los tamaños de ambas matrices
+            filas = int(fila_e1.get())
+            columnas = int(columna_e1.get())
+            
+            filas_M2 = int(fila_e2.get())
+            columnas_M2 = int(columna_e2.get())
+
+            # Verifica si los tamaños son válidos
+            if filas <= 1 or columnas <= 1 or filas_M2 <= 1 or columnas_M2 <= 1:
+                messagebox.showerror("Error", "El tamaño debe ser mayor a 1.")
+            else:
+                if filas != columnas_M2:
+                    messagebox.showerror("Error", "Estas matrices no se pueden multiplicar!!!")
+                else:
+                    correctorDePosicionM1 = tk.Frame(frame_pantalla_Multiplicacion)
+                    correctorDePosicionM1.grid(row=4, column=0, columnspan=columnas)
+
+                    correctorDePosicionM2 = tk.Frame(frame_pantalla_Multiplicacion)
+                    correctorDePosicionM2.grid(row=4, column=columnas, columnspan=columnas_M2)
+                    
+                    entradas_matriz = []
+                    for i in range(filas):
+                        fila = []
+                        for j in range(columnas):
+                            entrada = tk.Entry(correctorDePosicionM1, width=5)
+                            entrada.grid(row=i, column=j, padx=5, pady=5)
+                            fila.append(entrada)
+                        entradas_matriz.append(fila)
+                        
+                    entradas_matriz_2 = []
+                    for i in range(filas_M2):
+                        fila_2 = []
+                        for j in range(columnas_M2):
+                            entrada_2 = tk.Entry(correctorDePosicionM2, width=5)
+                            entrada_2.grid(row=i, column=j, padx=5, pady=5)
+                            fila_2.append(entrada_2)
+                        entradas_matriz_2.append(fila_2)
+                    # Función para calcular la multiplicación de matrices
+                    def calculoEnSi():
+                        try:
+                            # Obtener los valores de las matrices ingresadas
+                            matriz = np.array([[float(entradas_matriz[i][j].get()) for j in range(columnas)] for i in range(filas)])
+                            matriz_M2 = np.array([[float(entradas_matriz_2[i][j].get()) for j in range(columnas_M2)] for i in range(filas_M2)])
+                            
+                            # Realizar la multiplicación de matrices (producto matricial)
+                            resultado = np.dot(matriz, matriz_M2)
+                            
+                            # Mostrar el resultado en una nueva ventana o actualizar algún widget para mostrarlo
+                            resultado_multi.config(text=f"Resultado:\n{resultado}")
+                        except ValueError as e:
+                            messagebox.showerror("Error", f"Error: {str(e)}")
+                        except Exception as e:
+                            messagebox.showerror("Error", f"Error inesperado: {str(e)}")
+
+                # Crear botón para calcular el producto de matrices
+                boton_calcular = tk.Button(frame_pantalla_Multiplicacion, text="Multiplicar", command=calculoEnSi)
+                boton_calcular.grid(row=6 + filas, column=1, columnspan=2, padx=10, pady=10)
+            
+        except ValueError as e:
+            messagebox.showerror("Error", f"Error: {str(e)}")
+            
+    boton_generar = tk.Button(frame_pantalla_Multiplicacion, text="Generar Matriz", command=generar_matriz)
+    boton_generar.grid(row=6, column=1, columnspan=2, padx=10, pady=10)
+
+    resultado_multi = tk.Label(frame_pantalla_Multiplicacion, text="")
+    resultado_multi.grid(row=4 + 10, column=0, columnspan=4, padx=10, pady=10)
+            
+    boton_regresar_multi = tk.Button(frame_pantalla_Multiplicacion, text=("regresar"), command=pantalla_principal)
+    boton_regresar_multi.grid(row=0, column=0, padx=5, pady=5)
 
 def sis_ecu_Gaus():
     global boton_calcular, boton_graficar, entradas_matriz, resultado_label
@@ -424,9 +542,6 @@ def sis_ecu_cramer():
     resultado_label.grid(row=7, column=1, columnspan=3, padx=10, pady=10)
     
 # Definición de botones en la pantalla principal
-
-
-    
 boton_inversa = tk.Button(Frame2, activebackground="#0085fa", bg="#00bbfa",text="Matriz Inversa",font=("Times New Roman", 10),command=pantalla_Minversa, width=30, height=3)
 boton_inversa.grid(row=2, column=1, padx=10, pady=10)
     

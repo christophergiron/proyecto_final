@@ -196,34 +196,34 @@ def mostrar_resultado(matriz_inversa, tamano):
             tk.Label(frame_Pantalla_Minversa, bg="#ffc54a",text=f"{matriz_inversa[i, j]:.2f}").grid(row=i + tamano + 6, column=j, padx=5, pady=5,)
             
 def multi():
-    instruccionMulti = tk.Label(frame_pantalla_Multiplicacion, text="Ingrese el tamaño de sus matrices: ")
+    instruccionMulti = tk.Label(frame_pantalla_Multiplicacion, text="Ingrese el tamaño de sus matrices: ", bg="#ffc54a")
     instruccionMulti.grid(row=0, column=1, columnspan=2, padx=10, pady=10)
     
-    instruccionMulti_M1 = tk.Label(frame_pantalla_Multiplicacion, text="Primera Matriz")
+    instruccionMulti_M1 = tk.Label(frame_pantalla_Multiplicacion, text="Primera Matriz", bg="#ffc54a")
     instruccionMulti_M1.grid(row=1, column=0, columnspan=2, padx=10, pady=10)
     
-    instruccionMulti_M2 = tk.Label(frame_pantalla_Multiplicacion, text="Segunda Matriz")
+    instruccionMulti_M2 = tk.Label(frame_pantalla_Multiplicacion, text="Segunda Matriz", bg="#ffc54a")
     instruccionMulti_M2.grid(row=1, column=2, columnspan=2, padx=10, pady=10)
     
-    fila_la1 = tk.Label(frame_pantalla_Multiplicacion, text="Filas: ")
-    fila_la1.grid(row=2, column=0)
-    fila_e1 = tk.Entry(frame_pantalla_Multiplicacion, width=5)
-    fila_e1.grid(row=2, column=1)
+    fila_la1 = tk.Label(frame_pantalla_Multiplicacion, text="Filas: ", bg="#ffc54a")
+    fila_la1.grid(row=2, column=0, padx=10, pady=10)
+    fila_e1 = tk.Entry(frame_pantalla_Multiplicacion, width=5, bg="#79d7fd", font=("Times New Roman", 10))
+    fila_e1.grid(row=2, column=1, padx=10, pady=10)
 
-    columna_la1 = tk.Label(frame_pantalla_Multiplicacion, text="Columnas: ")
-    columna_la1.grid(row=3, column=0)
-    columna_e1 = tk.Entry(frame_pantalla_Multiplicacion, width=5)
-    columna_e1.grid(row=3, column=1)
+    columna_la1 = tk.Label(frame_pantalla_Multiplicacion, text="Columnas: ", bg="#ffc54a")
+    columna_la1.grid(row=3, column=0, padx=10, pady=10)
+    columna_e1 = tk.Entry(frame_pantalla_Multiplicacion, width=5, bg="#79d7fd", font=("Times New Roman", 10))
+    columna_e1.grid(row=3, column=1, padx=10, pady=10)
     
-    fila_la2 = tk.Label(frame_pantalla_Multiplicacion, text="Filas: ")
-    fila_la2.grid(row=2, column=2)
-    fila_e2 = tk.Entry(frame_pantalla_Multiplicacion, width=5)
-    fila_e2.grid(row=2, column=3)
+    fila_la2 = tk.Label(frame_pantalla_Multiplicacion, text="Filas: ", bg="#ffc54a")
+    fila_la2.grid(row=2, column=2, padx=10, pady=10)
+    fila_e2 = tk.Entry(frame_pantalla_Multiplicacion, width=5, bg="#79d7fd", font=("Times New Roman", 10))
+    fila_e2.grid(row=2, column=3, padx=10, pady=10)
 
-    columna_la2 = tk.Label(frame_pantalla_Multiplicacion, text="Columnas: ")
-    columna_la2.grid(row=3, column=2)
-    columna_e2 = tk.Entry(frame_pantalla_Multiplicacion, width=5)
-    columna_e2.grid(row=3, column=3)
+    columna_la2 = tk.Label(frame_pantalla_Multiplicacion, text="Columnas: ", bg="#ffc54a")
+    columna_la2.grid(row=3, column=2, padx=10, pady=10)
+    columna_e2 = tk.Entry(frame_pantalla_Multiplicacion, width=5, bg="#79d7fd", font=("Times New Roman", 10))
+    columna_e2.grid(row=3, column=3, padx=10, pady=10)
     
     #Genera la cuadricula de la matriz
     def generar_matriz():
@@ -263,7 +263,7 @@ def multi():
                     for i in range(filas):
                         fila = []
                         for j in range(columnas):
-                            entrada = tk.Entry(correctorDePosicionM1, width=5)
+                            entrada = tk.Entry(correctorDePosicionM1, width=5, bg="#79d7fd", font=("Times New Roman", 10))
                             entrada.grid(row=i, column=j, padx=5, pady=5)
                             fila.append(entrada)
                         entradas_matriz.append(fila)
@@ -272,7 +272,7 @@ def multi():
                     for i in range(filas_M2):
                         fila_2 = []
                         for j in range(columnas_M2):
-                            entrada_2 = tk.Entry(correctorDePosicionM2, width=5)
+                            entrada_2 = tk.Entry(correctorDePosicionM2, width=5, bg="#79d7fd", font=("Times New Roman", 10))
                             entrada_2.grid(row=i, column=j, padx=5, pady=5)
                             fila_2.append(entrada_2)
                         entradas_matriz_2.append(fila_2)
@@ -294,19 +294,19 @@ def multi():
                             messagebox.showerror("Error", f"Error inesperado: {str(e)}")
 
                 # Crear botón para calcular el producto de matrices
-                boton_calcular = tk.Button(frame_pantalla_Multiplicacion, text="Multiplicar", command=calculoEnSi)
+                boton_calcular = tk.Button(frame_pantalla_Multiplicacion, text="Multiplicar", activebackground="#0085fa",bg="#00bbfa", command=calculoEnSi)
                 boton_calcular.grid(row=6 + filas, column=1, columnspan=2, padx=10, pady=10)
             
         except ValueError as e:
             messagebox.showerror("Error", f"Error: {str(e)}")
             
-    boton_generar = tk.Button(frame_pantalla_Multiplicacion, text="Generar Matriz", command=generar_matriz)
+    boton_generar = tk.Button(frame_pantalla_Multiplicacion, activebackground="#0085fa",bg="#00bbfa", text="Generar Matriz", command=generar_matriz)
     boton_generar.grid(row=6, column=1, columnspan=2, padx=10, pady=10)
 
-    resultado_multi = tk.Label(frame_pantalla_Multiplicacion, text="")
+    resultado_multi = tk.Label(frame_pantalla_Multiplicacion, text="", bg="#ffc54a")
     resultado_multi.grid(row=4 + 10, column=0, columnspan=4, padx=10, pady=10)
             
-    boton_regresar_multi = tk.Button(frame_pantalla_Multiplicacion, text=("regresar"), command=pantalla_principal)
+    boton_regresar_multi = tk.Button(frame_pantalla_Multiplicacion, activebackground="#a93a48",bg="#c93a48",text=("regresar"), command=pantalla_principal)
     boton_regresar_multi.grid(row=0, column=0, padx=5, pady=5)
 
 def sis_ecu_Gaus():
@@ -336,7 +336,7 @@ def sis_ecu_Gaus():
         for i in range(filas):
             fila = []
             for j in range(columnas):
-                entrada = tk.Entry(frame_calc_gauss, width=5, bg="#79d7fd")
+                entrada = tk.Entry(frame_calc_gauss, width=5, activebackground="#0085fa",bg="#00bbfa")
                 entrada.grid(row=i + 2, column=j + 2, padx=5, pady=5)
                 fila.append(entrada)
             entradas_matriz.append(fila)

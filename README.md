@@ -1,10 +1,10 @@
 # **Proyecto Final**
 
-## **Diccionario de Datos**
+## **Diccionario de datos**
 
-Puedes ver [aqui](./Diccionario_de_datos.md) el listado completo con las variables y funciones utilizadas
+Puedes ver [aqui](./audiovisual/Diccionario_de_datos.md) el listado completo con las variables y funciones utilizadas
 
-## **Pagina Principal**
+## **Pagina principal**
 
 ### Objetivo
 El objetivo es dar acceso a las multiples calculadoras disponibles en el presente proyecto ademas de la navegacion entre los integrantes los cuales fueron participantes en la elaboracion de las calculadoras finalmente una forma dinamica de cerrar la ventana al dejar de usar la aplicacion
@@ -57,6 +57,20 @@ Realizar operaciones varias basadas en en la libreria numpy las cuales serian
 Realizar operaciones varias con matrices como multiplicar, conseguir la matriz inversa y resolver sistemas de ecuaciones.
 
 ### Como se hace
+* Seleccione la operacion a realizar
+* En el caso de los sistemas de ecuaciones selecciona el metodo
+* Rellena los datos
+
+### Demostracion visual
+![](./audiovisual/Capturas/Calculador_algebra_lineal/Menu_principal.png)
+![](./audiovisual/Capturas/Calculador_algebra_lineal/Menu_metodos.png)
+
+### Ejemplos de uso
+![](./audiovisual/Capturas/Calculador_algebra_lineal/Matriz_inversa.png)
+![](./audiovisual/Capturas/Calculador_algebra_lineal/Multiplicacion.png)
+
+#### Sistemas de ecuaciones diferentes metodos
+
 
 
 ## **Extras**

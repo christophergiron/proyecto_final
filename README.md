@@ -45,11 +45,19 @@ cantidad de estas mismas que se pueden realizar
 
 ### Objetivo
 
-Con esta calculadora Se pueden realizar
+Realizar operaciones varias basadas en en la libreria numpy las cuales serian
+
+* Conseguir una matriz inversa
+* Multiplicar 2 matrices
+* Realizar sistemas de ecuaciones por 2 metodos dejando procedimiento y teniendo la posibilidad de visualizarlo en una grafica aqui los metodos que se pueden utilizar.
+    * Metodo de Cramer
+    * Metodo de Gauss Jordan
 
 ### Que hace
+Realizar operaciones varias con matrices como multiplicar, conseguir la matriz inversa y resolver sistemas de ecuaciones.
 
 ### Como se hace
+
 
 ## **Extras**
 

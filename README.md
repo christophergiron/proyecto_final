@@ -5,7 +5,12 @@
 Puedes ver [aqui](./Diccionario_de_datos.md) el listado completo con las variables y funciones utilizadas
 
 ## **Pagina Principal**
-
+El objetivo es dar acceso a las multiples calculadoras disponibles en el presente proyecto ademas de la navegacion entre los integrantes los cuales fueron participantes en la elaboracion de las calculadoras finalmente una forma dinamica de cerrar la ventana al dejar de usar la aplicacion
+  
+Que hace: permite el libre acceso a las pantallas en las cuales estan disponibles las calculadoras ademas de dar una vista y una disposicion amigable al usuario.
+  
+Como se hace: haciendo clic en los 3 posibles botones que redireccionaran a las pantallas disponibles en el proyecto una vez terminadas de usar las calculadoras disponibles tiene la libertar de cerrar el programa presionando el boton rojo en la parte inferior del programa.
+  
 ## **Calculadora de combinaciones y permutaciones**
 El Objetivo: realizar las operaciones seleccionables, ya sea permutaciones y conmutaciones, al igual que puedes
 elegir el tipo de repeticiones se realizan

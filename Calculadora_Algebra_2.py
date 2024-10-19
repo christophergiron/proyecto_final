@@ -306,7 +306,7 @@ def multi():
     resultado_multi = tk.Label(frame_pantalla_Multiplicacion, text="", bg="#ffc54a")
     resultado_multi.grid(row=4 + 10, column=0, columnspan=4, padx=10, pady=10)
             
-    boton_regresar_multi = tk.Button(frame_pantalla_Multiplicacion, activebackground="#a93a48",bg="#c93a48",text=("regresar"), command=pantalla_principal)
+    boton_regresar_multi = tk.Button(frame_pantalla_Multiplicacion, activebackground="#a93a48", bg="#c93a48",text=("regresar"), command=pantalla_principal)
     boton_regresar_multi.grid(row=0, column=0, padx=5, pady=5)
 
 def sis_ecu_Gaus():
@@ -336,7 +336,7 @@ def sis_ecu_Gaus():
         for i in range(filas):
             fila = []
             for j in range(columnas):
-                entrada = tk.Entry(frame_calc_gauss, width=5, activebackground="#0085fa",bg="#00bbfa")
+                entrada = tk.Entry(frame_calc_gauss, width=5, bg="#79d7fd")
                 entrada.grid(row=i + 2, column=j + 2, padx=5, pady=5)
                 fila.append(entrada)
             entradas_matriz.append(fila)
@@ -436,8 +436,8 @@ def sis_ecu_cramer():
         # Limpiar el resultado anterior
         resultado_label.config(text="")
         # Si hay un botón de graficar, lo eliminamos
-        if boton_graficar is not None:
-            boton_graficar.destroy()
+        if boton_graficar_cramer is not None:
+            boton_graficar_cramer.destroy()
         plt.close('all')
         
     def generar_matriz_cra(filas, columnas):
@@ -490,16 +490,16 @@ def sis_ecu_cramer():
             resultado_label.config(text=f"Solución:\n{soluciones_str}")
             
             global boton_graficar_cramer
-            boton_graficar_cramer = tk.Button(frame_calc_gauss, text="Mostrar Gráfica", command=lambda: mostrar_grafica(soluciones_str))
+            boton_graficar_cramer = tk.Button(frame_calc_cramer, text="Mostrar Gráfica", command=lambda: mostrar_grafica(soluciones))
             boton_graficar_cramer.grid(row=8, column=1, columnspan=2, padx=5, pady=5)
             
         except Exception as e:
             messagebox.showerror("Error", f"Error al calcular la solución: {str(e)}")
             
-    def mostrar_grafica(soluciones_str):
-        if len(soluciones_str) == 2:
+    def mostrar_grafica(soluciones):
+        if len(soluciones) == 2:
             x_vals = np.linspace(-10, 10, 100)
-            y_vals = soluciones_str[0] * x_vals + soluciones_str[1]
+            y_vals = soluciones[0] * x_vals + soluciones[1]
             
             plt.plot(x_vals, y_vals, label='Solución del sistema')
             plt.xlabel('X')
@@ -508,15 +508,14 @@ def sis_ecu_cramer():
             plt.legend()
             plt.grid(True)
             plt.show()
-        elif len(soluciones_str) == 3:
-            
+        elif len(soluciones) == 3:
             fig = plt.figure()
             ax = fig.add_subplot(111, projection='3d')
             
             x_vals = np.linspace(-10, 10, 100)
             y_vals = np.linspace(-10, 10, 100)
             X, Y = np.meshgrid(x_vals, y_vals)
-            Z = soluciones_str[0] * X + soluciones_str[1] * Y + soluciones_str[2]
+            Z = soluciones[0] * X + soluciones[1] * Y + soluciones[2]
             
             ax.plot_surface(X, Y, Z, cmap='viridis')
             ax.set_xlabel('X')

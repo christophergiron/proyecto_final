@@ -198,20 +198,50 @@ def operaciones_Algebra(Frame2, volver_inicio):
                 widget.grid_forget()
 
     def calcular_inversa(tamano, matriz_entries):
+        procedimiento = "Procedimiento para calcular la inversa:\n"
         try:
             matriz = np.zeros((tamano, tamano))
             for i in range(tamano):
                 for j in range(tamano):
                     matriz[i, j] = float(matriz_entries[i][j].get())
+                    
+            # Crear la matriz identidad
+            identidad = np.eye(tamano)
+            matriz_original = np.copy(matriz)
+            procedimiento += f"Matriz original:\n{matriz}\n"
+            procedimiento += f"Matriz identidad:\n{identidad}\n"
+            
+            # Empezar las operaciones para calcular la inversa
+            for i in range(tamano):
+                inversa = matriz[i, i]
+                if inversa == 0:
+                    raise np.linalg.LinAlgError("La matriz no es invertible")
+                
+                # Dividir la fila por la inversa
+                matriz[i] = matriz[i] / inversa
+                identidad[i] = identidad[i] / inversa
+                procedimiento += f"Dividimos la fila {i+1} por el inversa {inversa}:\n{matriz}\n"
+                
+                # Restar las otras filas para hacer ceros en la columna
+                for j in range(tamano):
+                    if i != j:
+                        factor = matriz[j, i]
+                        matriz[j] -= factor * matriz[i]
+                        identidad[j] -= factor * identidad[i]
+                        procedimiento += f"Restamos {factor} * fila {i+1} a la fila {j+1}:\n{matriz}\n"
+                        
+            matriz_inversa = identidad
+            procedimiento += f"Resultado - Matriz inversa:\n{matriz_inversa}\n"
+            
+            # Muestra el procedimiento y el resultado final
+            mostrar_resultado_procedimiento(matriz_inversa, tamano, procedimiento)
 
-            matriz_inversa = np.linalg.inv(matriz)
-            mostrar_resultado(matriz_inversa, tamano)
         except np.linalg.LinAlgError:
             messagebox.showerror("Error", "La matriz no es invertible.")
         except ValueError:
             messagebox.showerror("Error", "Por favor, ingrese valores numéricos válidos.")
 
-    def mostrar_resultado(matriz_inversa, tamano):
+    def mostrar_resultado_procedimiento(matriz_inversa, tamano, procedimiento):
         # Mostramos los resultados justo debajo de la matriz ingresada
         tk.Label(frame_Pantalla_Minversa, text="Matriz Inversa:", bg="#ffc54a").grid(row=tamano + 7, column=2, columnspan=tamano, padx=10, pady=10)
 
@@ -219,6 +249,10 @@ def operaciones_Algebra(Frame2, volver_inicio):
         for i in range(matriz_inversa.shape[0]):
             for j in range(matriz_inversa.shape[1]):
                 tk.Label(frame_Pantalla_Minversa, bg="#ffc54a",text=f"{matriz_inversa[i, j]:.2f}").grid(row=i + tamano + 8, column=j + 2, padx=5, pady=5,)
+                
+        # Mostrar el procedimiento en un label aparte
+        procedimiento_label = tk.Label(frame_Pantalla_Minversa, text=procedimiento, bg="#ffc54a", justify="left")
+        procedimiento_label.grid(row=tamano + 10, column=2, columnspan=tamano, padx=10, pady=10)
                 
     def multi():
         instruccionMulti = tk.Label(frame_pantalla_Multiplicacion, text="Ingrese el tamaño de sus matrices: ", bg="#ffc54a")

@@ -337,16 +337,27 @@ def operaciones_Algebra(Frame2, volver_inicio):
                             entradas_matriz_2.append(fila_2)
                         # Función para calcular la multiplicación de matrices
                         def calculoEnSi():
+                            procedimiento = "Procedimiento de multiplicación:\n"
                             try:
                                 # Obtener los valores de las matrices ingresadas
                                 matriz = np.array([[float(entradas_matriz[i][j].get()) for j in range(columnas)] for i in range(filas)])
                                 matriz_M2 = np.array([[float(entradas_matriz_2[i][j].get()) for j in range(columnas_M2)] for i in range(filas_M2)])
                                 
-                                # Realizar la multiplicación de matrices (producto matricial)
-                                resultado = np.dot(matriz, matriz_M2)
+                                # Inicializar la matriz resultado
+                                resultado = np.zeros((filas, columnas_M2))
                                 
-                                # Mostrar el resultado en una nueva ventana o actualizar algún widget para mostrarlo
+                                # Realizar la multiplicación y registrar el procedimiento
+                                for i in range(filas):
+                                    for j in range(columnas_M2):
+                                        for k in range(columnas):
+                                            resultado[i, j] += matriz[i, k] * matriz_M2[k, j]
+                                            procedimiento += f"{matriz[i, k]} * {matriz_M2[k, j]} + "
+                                        procedimiento = procedimiento[:-3] + f" = {resultado[i, j]}\n"
+                                        
+                                # Mostrar el procedimiento y el resultado
                                 resultado_multi.config(text=f"Resultado:\n{resultado}")
+                                procedimiento_multi.config(text=procedimiento)
+                                
                             except ValueError as e:
                                 messagebox.showerror("Error", f"Error: {str(e)}")
                             except Exception as e:
@@ -364,6 +375,9 @@ def operaciones_Algebra(Frame2, volver_inicio):
 
         resultado_multi = tk.Label(frame_pantalla_Multiplicacion, text="", bg="#ffc54a")
         resultado_multi.grid(row=4 + 10, column=1, columnspan=4, padx=10, pady=10)
+        
+        procedimiento_multi = tk.Label(frame_pantalla_Multiplicacion, text="", bg="#ffc54a", justify="left")
+        procedimiento_multi.grid(row=4 + 12, column=1, columnspan=4, padx=10, pady=10)
                 
         boton_regresar_multi = tk.Button(frame_pantalla_Multiplicacion, activebackground="#a93a48", bg="#c93a48",text=("regresar"), command=pantalla_principal, width=20)
         boton_regresar_multi.grid(row=0, column=0, padx=5, pady=5)

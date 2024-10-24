@@ -252,7 +252,7 @@ def operaciones_Algebra(Frame2, volver_inicio):
                 
         # Mostrar el procedimiento en un label aparte
         procedimiento_label = tk.Label(frame_Pantalla_Minversa, text=procedimiento, bg="#cde0ff", justify="left")
-        procedimiento_label.grid(row=tamano + 10, column=2, columnspan=tamano, padx=10, pady=10)
+        procedimiento_label.grid(row=tamano + 11, column=2, columnspan=tamano, padx=10, pady=10)
                 
     def multi():
         instruccionMulti = tk.Label(frame_pantalla_Multiplicacion, text="Ingrese el tamaño de sus matrices: ", bg="#498af2")

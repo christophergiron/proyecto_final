@@ -12,7 +12,7 @@ ventana.title("Proyecto Final")
 ventana.geometry("800x500")
 ventana.resizable(0, 1)
 ventana.iconbitmap(os.path.join(carpeta_recursos, 'logo.ico'))
-ventana.config(bg="#00183e")
+ventana.config(bg="#498af2")
 # Inicializa pygame para la reproducción de sonidos
 pygame.mixer.init()
 
@@ -82,40 +82,40 @@ def pantalla_integrantes():
     boton_volver_integrantes.grid(row=4, column=1, padx=10, pady=10)
 
 # Definición de las pantallas
-home = tk.Frame(ventana, bg="#00183e")  # Asegúrate de aplicar el color a todos los Frames
-algebra_lineal = tk.Frame(ventana, bg="#00183e")
-matematica_discreta = tk.Frame(ventana, bg="#00183e")
-integrantes = tk.Frame(ventana, bg="#00183e")
-frame_integrantes = tk.Frame(integrantes, bg="#00183e")
+home = tk.Frame(ventana, bg="#498af2")  # Asegúrate de aplicar el color a todos los Frames
+algebra_lineal = tk.Frame(ventana, bg="#498af2")
+matematica_discreta = tk.Frame(ventana, bg="#498af2")
+integrantes = tk.Frame(ventana, bg="#498af2")
+frame_integrantes = tk.Frame(integrantes, bg="#498af2")
 frame_integrantes.grid(row=0, column=0, padx=50, pady=20)
 
 # Botones de navegación entre calculadoras
-boton1 = tk.Button(ventana, activebackground="#0085fa", bg="#00bbfa", text="Álgebra lineal",  font=("Times New Roman", 10),command=pantalla_algebra, width=30, height=3)
+boton1 = tk.Button(ventana, activebackground="#4c6c9e", bg="#92bcff", text="Álgebra lineal",  font=("Times New Roman", 10),command=pantalla_algebra, width=30, height=3)
 boton1.grid(row=1, column=0, padx=10, pady=10)
 
-boton2 = tk.Button(ventana, activebackground="#0085fa", bg="#00bbfa", text="Matemática discreta",  font=("Times New Roman", 10),command=pantalla_matematica, width=30, height=3)
+boton2 = tk.Button(ventana, activebackground="#4c6c9e", bg="#92bcff", text="Matemática discreta",  font=("Times New Roman", 10),command=pantalla_matematica, width=30, height=3)
 boton2.grid(row=2, column=0, padx=10, pady=10) 
 
-boton_integrantes = tk.Button(ventana, activebackground="#0085fa", bg="#00bbfa", text="Integrantes",  font=("Times New Roman", 10), command=pantalla_integrantes, width=30, height=3)
+boton_integrantes = tk.Button(ventana, activebackground="#4c6c9e", bg="#92bcff", text="Integrantes",  font=("Times New Roman", 10), command=pantalla_integrantes, width=30, height=3)
 boton_integrantes.grid(row=3, column=0, padx=10, pady=10)
 
 # Label de bienvenida (centrado y en la parte superior)
-bienvenida = tk.Label(home, bg="#00183e", fg="#ffc54a", text="Bienvenido, selecciona tu calculadora", font=("Times New Roman", 10))
+bienvenida = tk.Label(home, bg="#498af2", text="Bienvenido, selecciona tu calculadora", font=("Times New Roman", 10))
 bienvenida.grid(row=0, column=2, padx=310, pady=(20, 10), sticky="n")
 
 # Botones para regresar a la pantalla principal
-boton_volver_algebra = tk.Button(algebra_lineal, activebackground="#a93a48", bg="#c93a48", text="Volver al Inicio", command=pantalla_inicio, width=25, height=3)
+boton_volver_algebra = tk.Button(algebra_lineal, activebackground="#001a43", bg="#4e2193", text="Volver al Inicio", command=pantalla_inicio, width=25, height=3)
 boton_volver_algebra.grid(row=4, column=1, padx=10, pady=10)
 
 boton_volver_matematica = tk.Button(matematica_discreta, text="Volver al Inicio", command=pantalla_inicio)
 boton_volver_matematica.grid(row=4, column=1, padx=10, pady=10)
 
-boton_volver_integrantes = tk.Button(integrantes, activebackground="#a93a48", bg="#c93a48", text="Volver al Inicio", command=pantalla_inicio, width=25, height=3)
+boton_volver_integrantes = tk.Button(integrantes, activebackground="#001a43", bg="#4e2193", text="Volver al Inicio", command=pantalla_inicio, width=25, height=3)
 boton_volver_integrantes.grid(row=4, column=0, padx=10, pady=50)
 
 # Botón de cierre con imagen
 icono = tk.PhotoImage(file=os.path.join(carpeta_recursos, "pistola.png"))
-kill = tk.Button(ventana, activebackground="#a93a48",bg="#c93a48", image=icono, command=reproducir_sonido_cerrar)
+kill = tk.Button(ventana, activebackground="#001a43", bg="#4e2193", image=icono, command=reproducir_sonido_cerrar)
 kill.place(x=700, y=400, width=50, height=40)
 
 # contenido de la pantalla integrantes 

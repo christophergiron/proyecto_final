@@ -1,6 +1,6 @@
 import tkinter as tk
 import Calculadora_Mate as CM
-import Calculadora_Algebra as CA 
+import Calculadora_Algebra as CA
 import pygame
 import os
 from tkinter import ttk
@@ -132,7 +132,7 @@ tree.insert("", "end", values=("Christopher Ricardo Garcia Giron", "0907-24-1008
 tree.insert("", "end", values=("Miguel José Alfaro Vásquez","0907-24-12948", "Encargado calculadora Matematica discreta,Decorador"))
 tree.insert("", "end", values=("José Miguel Castillo Pérez","0907-24-1862", "Encargado calculadora algebra lineal"))
 tree.insert("", "end", values=("Diego Alejandro Fernández González","0907-24-25569", "Encargado calculadora algebra lineal"))
-tree.pack(padx=10, pady=50)  # Usamos pack en lugar de grid para este caso
+tree.pack(padx=10, pady=50)
 
 # Botón para regresar a la pantalla principal
 boton_volver_integrantes = tk.Button(frame_integrantes, text="Volver al Inicio", command=pantalla_inicio)

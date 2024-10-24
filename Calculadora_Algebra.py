@@ -415,7 +415,7 @@ def operaciones_Algebra(Frame2, volver_inicio):
                     entrada.grid(row=i + 2, column=j + 5, padx=2, pady=5)
                     fila.append(entrada)
                 entradas_matriz.append(fila)
-            
+
             if boton_calcular is not None:
                 boton_calcular.destroy()
 
@@ -445,46 +445,66 @@ def operaciones_Algebra(Frame2, volver_inicio):
                             factor = argumento[j, i]
                             argumento[j] -= factor * argumento[i]  # Eliminar elemento
                             procedimiento += f"Fila {j+1} se resta con {factor} * Fila {i+1}:\n{argumento}\n"
-                            
+
                 resultado = argumento[:, -1]
                 resultado_label.config(text=f"Solución:\n{resultado}")
                 procedimiento_label.config(text=procedimiento)
-                
-                # Crear botón de graficar solo si el cálculo fue exitoso
+
                 global boton_graficar
-                boton_graficar = tk.Button(frame_calc_gauss, activebackground="#4c6c9e", bg="#92bcff", text="Mostrar Gráfica", command=lambda: mostrar_grafica(resultado))
+                boton_graficar = tk.Button(frame_calc_gauss, activebackground="#4c6c9e", bg="#92bcff", text="Mostrar Gráfica", command=lambda: mostrar_grafica(matriz))
                 boton_graficar.grid(row=10, column=3, columnspan=2, padx=5, pady=5)
 
             except Exception as e:
                 messagebox.showerror("Error", f"Error al calcular la solución: {str(e)}")
 
-        def mostrar_grafica(resultado):
-            if len(resultado) == 2:
-                x_vals = np.linspace(-10, 10, 100)
-                y_vals = resultado[0] * x_vals + resultado[1]
+        def mostrar_grafica(matriz):
+            filas, columnas = matriz.shape
+            if columnas == 3:  # Gráfica 2D para sistemas de 2 variables
+                x = np.linspace(-10, 10, 100)
+                plt.figure(figsize=(8, 8))
 
-                plt.plot(x_vals, y_vals, label='Solución del sistema')
-                plt.xlabel('X')
-                plt.ylabel('Y')
-                plt.title('Gráfica del sistema 2x2')
+                for fila in matriz:
+                    A = fila[0]
+                    B = fila[1]
+                    C = fila[2]
+
+                    if B != 0:
+                        y = (-A / B) * x + (C / B)
+                        plt.plot(x, y, label=f'{A}x + {B}y = {C}')
+
+                plt.axhline(0, color='black', linewidth=0.5, ls='--')
+                plt.axvline(0, color='black', linewidth=0.5, ls='--')
+                plt.grid(color='gray', linestyle='--', linewidth=0.5)
+                plt.xlabel('x')
+                plt.ylabel('y')
+                plt.title('Gráficas de Ecuaciones Lineales')
                 plt.legend()
-                plt.grid(True)
+                plt.xlim(-10, 10)
+                plt.ylim(-10, 10)
                 plt.show()
-            elif len(resultado) == 3:
+
+            elif columnas == 4:  # Gráfica 3D para sistemas de 3 variables
+                x = np.linspace(-10, 10, 10)
+                y = np.linspace(-10, 10, 10)
+                x, y = np.meshgrid(x, y)
 
                 fig = plt.figure()
                 ax = fig.add_subplot(111, projection='3d')
 
-                x_vals = np.linspace(-10, 10, 100)
-                y_vals = np.linspace(-10, 10, 100)
-                X, Y = np.meshgrid(x_vals, y_vals)
-                Z = resultado[0] * X + resultado[1] * Y + resultado[2]
+                for fila in matriz:
+                    A = fila[0]
+                    B = fila[1]
+                    C = fila[2]
+                    D = fila[3]
 
-                ax.plot_surface(X, Y, Z, cmap='viridis')
+                    if C != 0:
+                        z = (D - A * x - B * y) / C
+                        ax.plot_surface(x, y, z, alpha=0.5)
+
                 ax.set_xlabel('X')
                 ax.set_ylabel('Y')
                 ax.set_zlabel('Z')
-                plt.title('Gráfica del sistema 3x3')
+                ax.set_title('Gráfica del sistema 3x3')
                 plt.show()
 
         # Botones para seleccionar el tamaño de la matriz
@@ -526,7 +546,7 @@ def operaciones_Algebra(Frame2, volver_inicio):
             if boton_graficar_cramer is not None:
                 boton_graficar_cramer.destroy()
             plt.close('all') # Se encarga de cerrar la grafica abierta en ese momento al generar una nueva matriz
-            
+
         def generar_matriz_cra(filas, columnas):
             global boton_calcular_cramer, boton_graficar_cramer, entradas_matriz
             limpiar_matriz_cra()  # Limpiar cualquier matriz previa
@@ -540,33 +560,33 @@ def operaciones_Algebra(Frame2, volver_inicio):
                     entrada.grid(row=i + 2, column=j + 5, padx=2, pady=5)
                     fila.append(entrada)
                 entradas_matriz.append(fila)
-                
+
             if boton_calcular_cramer is not None:
                 boton_calcular_cramer.destroy()
-                
-            boton_calcular_cramer = tk.Button(frame_calc_cramer, text="Calcular",  activebackground="#4c6c9e", bg="#92bcff", command=lambda: calcular_solucion(entradas_matriz))
+
+            boton_calcular_cramer = tk.Button(frame_calc_cramer, text="Calcular", activebackground="#4c6c9e", bg="#92bcff", command=lambda: calcular_solucion(entradas_matriz))
             boton_calcular_cramer.grid(row=10, column=1, columnspan=2, padx=5, pady=5)
-            
+
         def calcular_solucion(entradas):
             limpiar_resultado_y_boton_cra()
             try:
                 matriz = np.array([[float(entradas[i][j].get()) for j in range(len(entradas[0]))] for i in range(len(entradas))])
                 filas, columnas = matriz.shape
                 procedimiento = "Procedimiento:\n"
-                
+
                 if filas != columnas - 1:
                     messagebox.showerror("Error", "La matriz no tiene un formato válido.")
                     return
-                
+
                 A = matriz[:, :-1]  # Matriz de coeficientes
                 b = matriz[:, -1]   # Vector de resultados
-                
+
                 det_A = np.linalg.det(A)
                 procedimiento += f"Determinante de la matriz A:\n{formatear_matriz(A)}\nDet(A) = {Fraction(det_A).limit_denominator()}\n\n"
                 if det_A == 0:
                     messagebox.showerror("Error", "El sistema no tiene solución única.")
                     return
-                
+
                 soluciones = []
                 for i in range(len(b)):
                     Ai = np.copy(A)
@@ -575,49 +595,70 @@ def operaciones_Algebra(Frame2, volver_inicio):
                     procedimiento += f"Determinante de la matriz A con la columna {i+1} reemplazada por el vector b:\n{formatear_matriz(Ai)}\nDet(A_{i+1}) = {Fraction(det_Ai).limit_denominator()}\n\n"
                     solucion = det_Ai / det_A
                     soluciones.append(Fraction(solucion).limit_denominator())
-                    
+
                 soluciones_str = ', '.join([str(sol) for sol in soluciones])
                 resultado_label.config(text=f"Solución:\n{soluciones_str}")
                 procedimiento_label.config(text=procedimiento)
-                
+
                 global boton_graficar_cramer
-                boton_graficar_cramer = tk.Button(frame_calc_cramer,  activebackground="#4c6c9e", bg="#92bcff", text="Mostrar Gráfica", command=lambda: mostrar_grafica(soluciones))
+                boton_graficar_cramer = tk.Button(frame_calc_cramer, activebackground="#4c6c9e", bg="#92bcff", text="Mostrar Gráfica", command=lambda: mostrar_grafica(matriz))
                 boton_graficar_cramer.grid(row=8, column=3, columnspan=2, padx=5, pady=5)
-                
+
             except Exception as e:
                 messagebox.showerror("Error", f"Error al calcular la solución: {str(e)}")
-                
-        def mostrar_grafica(soluciones):
-            if len(soluciones) == 2:
-                x_vals = np.linspace(-10, 10, 100)
-                y_vals = soluciones[0] * x_vals + soluciones[1]
-                
-                plt.plot(x_vals, y_vals, label='Solución del sistema')
-                plt.xlabel('X')
-                plt.ylabel('Y')
-                plt.title('Gráfica del sistema 2x2')
+
+        def mostrar_grafica(matriz):
+            filas, columnas = matriz.shape
+            if columnas == 3:  # Gráfica 2D para sistemas de 2 variables
+                x = np.linspace(-10, 10, 100)
+                plt.figure(figsize=(8, 8))
+
+                for fila in matriz:
+                    A = fila[0]
+                    B = fila[1]
+                    C = fila[2]
+
+                    if B != 0:
+                        y = (-A / B) * x + (C / B)
+                        plt.plot(x, y, label=f'{A}x + {B}y = {C}')
+
+                plt.axhline(0, color='black', linewidth=0.5, ls='--')
+                plt.axvline(0, color='black', linewidth=0.5, ls='--')
+                plt.grid(color='gray', linestyle='--', linewidth=0.5)
+                plt.xlabel('x')
+                plt.ylabel('y')
+                plt.title('Gráficas de Ecuaciones Lineales')
                 plt.legend()
-                plt.grid(True)
+                plt.xlim(-10, 10)
+                plt.ylim(-10, 10)
                 plt.show()
-            elif len(soluciones) == 3:
+
+            elif columnas == 4:  # Gráfica 3D para sistemas de 3 variables
+                x = np.linspace(-10, 10, 10)
+                y = np.linspace(-10, 10, 10)
+                x, y = np.meshgrid(x, y)
 
                 fig = plt.figure()
                 ax = fig.add_subplot(111, projection='3d')
-                
-                x_vals = np.linspace(-10, 10, 100)
-                y_vals = np.linspace(-10, 10, 100)
-                X, Y = np.meshgrid(x_vals, y_vals)
-                Z = soluciones[0] * X + soluciones[1] * Y + soluciones[2]
-                
-                ax.plot_surface(X, Y, Z, cmap='viridis')
+
+                for fila in matriz:
+                    A = fila[0]
+                    B = fila[1]
+                    C = fila[2]
+                    D = fila[3]
+
+                    if C != 0:
+                        z = (D - A * x - B * y) / C
+                        ax.plot_surface(x, y, z, alpha=0.5)
+
                 ax.set_xlabel('X')
                 ax.set_ylabel('Y')
                 ax.set_zlabel('Z')
-                plt.title('Gráfica del sistema 3x3')
+                ax.set_title('Gráfica del sistema 3x3')
                 plt.show()
 
         def formatear_matriz(matriz):
-            """Convierte la matriz a una representación de cadenas de fracciones."""
+            #Convierte la matriz a una representación de cadenas de fracciones.
             return '\n'.join(['\t'.join([str(Fraction(x).limit_denominator()) for x in fila]) for fila in matriz])
     
         instruccionSize = tk.Label(frame_calc_cramer, bg="#498af2", text="Seleccione el tamaño del sistema de ecuaciones", width=50)

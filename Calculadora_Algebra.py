@@ -450,6 +450,7 @@ def operaciones_Algebra(Frame2, volver_inicio):
                 resultado_label.config(text=f"Solución:\n{resultado}")
                 procedimiento_label.config(text=procedimiento)
 
+                # Crear botón de graficar solo si el cálculo fue exitoso
                 global boton_graficar
                 boton_graficar = tk.Button(frame_calc_gauss, activebackground="#4c6c9e", bg="#92bcff", text="Mostrar Gráfica", command=lambda: mostrar_grafica(matriz))
                 boton_graficar.grid(row=10, column=3, columnspan=2, padx=5, pady=5)
